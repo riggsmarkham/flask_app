@@ -2,13 +2,61 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Hello, Flask</title>
+        <title>Election Sim and Evaluator</title>
     </head>
     <body>
-        {%if name %}
-            <strong>Hello there, {{ name }}!</strong> It's {{ date.strftime("%A, %d %B, %Y at %X") }}.
-        {% else %}
-            What's your name? Provide it after /hello/ in the URL.
-        {% endif %}
+        <div>
+            <button type="button" class="row1" onclick="toggle_display('sim', 'row1', this)">Simulate Election</button>
+            <button type="button" class="row1" onclick="toggle_display('eval', 'row1', this)">Evaluate Election</button>
+        </div>
+        <div>
+            <button type="button" class="row2 sim" style="visibility: hidden;" onclick="toggle_display('polling', 'row2', this)">Polling Data</button>
+            <button type="button" class="row2 sim" style="visibility: hidden;" onclick="toggle_display('model', 'row2', this)">Ideological Model</button>
+            <button type="button" class="row2 eval" style="visibility: hidden;" onclick="toggle_display('polling', 'row2', this)">Polling Data</button>
+        </div>
+        <div>
+            <button type="button" class="row3 polling" style="visibility: hidden;" onclick="toggle_display('fptp', 'row3', this)">FPTP Polls</button>
+            <button type="button" class="row3 polling" style="visibility: hidden;" onclick="toggle_display('pref', 'row3', this)">Preference Lists</button>
+            <button type="button" class="row3 polling" style="visibility: hidden;" onclick="toggle_display('appr', 'row3', this)">Approval Polls</button>
+            <button type="button" class="row3 polling" style="visibility: hidden;" onclick="toggle_display('pair', 'row3', this)">Ranked Pairs</button>
+            <button type="button" class="row3 model" style="visibility: hidden;">Not Implemented Yet</button>
+        </div>
+        <div>
+            <button type="button" class="row4 fptp pref appr pair" style="visibility: hidden;" onclick="toggle_display('file', 'row4', this)">Input File</button>
+            <button type="button" class="row4 fptp pref appr pair" style="visibility: hidden;" onclick="toggle_display('text', 'row4', this)">Input Text</button>
+        </div>
+        <p id='displaything'></p>
     </body>
+    <script>
+        var selection = [];
+        function toggle_display(class_name, row_name, clicked_el){
+            if(!clicked_el.classList.contains('clicked')){
+                clicked_el.classList.add('clicked')
+                selection.push(class_name);
+                class_items = document.getElementsByClassName(class_name);
+                for(el of class_items){
+                    el.style.visibility = 'visible'
+                };
+                row_items = document.getElementsByClassName(row_name);
+                for(el of row_items){
+                    el.disabled = true;
+                };
+                clicked_el.disabled = false;
+            }else{
+                clicked_el.classList.remove('clicked')
+                selection.pop();
+                row_items = document.getElementsByClassName(row_name);
+                for(el of row_items){
+                    el.disabled = false;
+                };
+                if(document.getElementsByClassName(class_name)[0]){
+                    next_row_items = document.getElementsByClassName(document.getElementsByClassName(class_name)[0].classList[0])
+                    for(el of next_row_items){
+                        el.style.visibility = 'hidden'
+                    };
+                }
+            }
+            document.getElementById('displaything').innerHTML = selection;
+        }
+    </script>
 </html>
