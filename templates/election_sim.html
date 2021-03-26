@@ -30,7 +30,7 @@
         <div>
             <button type="button" class="row5 file text" style="visibility: hidden;" onclick="submit()">Ready?</button>
         </div>
-        <p id='displaything'></p>
+        <!--<p id='displaything'></p>-->
         <form id='sub_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
             <input type = "file" name = "file"></input>
             <input type = "submit"></input>
@@ -65,30 +65,30 @@
                     };
                 }
             }
-            document.getElementById('displaything').innerHTML = selection;
+            //document.getElementById('displaything').innerHTML = selection;
         }
 
         function submit(){
-            if(selection[3] == "fptp"){
-                if (selection[4] == "file"){
+            if(selection[2] == "fptp"){
+                if (selection[3] == "file"){
                     reveal_file_submission()
                 } else {
 
                 }
-            } else if (selection[3] == "pref") {
-                if (selection[4] == "file"){
+            } else if (selection[2] == "pref") {
+                if (selection[3] == "file"){
                     reveal_file_submission()
                 } else {
 
                 }
-            } else if (selection[3] == "appr") {
-                if (selection[4] == "file"){
+            } else if (selection[2] == "appr") {
+                if (selection[3] == "file"){
                     reveal_file_submission()
                 } else {
 
                 }
             } else {
-                if (selection[4] == "file"){
+                if (selection[3] == "file"){
                     reveal_file_submission()
                 } else {
 
@@ -97,7 +97,7 @@
         }
 
         function reveal_file_submission(){
-            document.getElementById('displaything').style.visibility = 'visible'
+            document.getElementById('sub_form').style.visibility = 'visible'
         }
     </script>
 </html>
