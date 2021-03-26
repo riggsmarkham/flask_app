@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Election Simulator</title>
+    </head>
+    <body>
+        <h3><a href="/election_sim">Go back to election simulator</a></h3>
+        {% if type == "file": %}
+        <p>Your file {{filename}} was successfully uploaded</p>
+        {% else %}
+        <p>Your input was received</p>
+        {% endif %}
+        <button type="button">Process</button>
+    </body>
+</html>
