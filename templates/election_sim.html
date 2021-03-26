@@ -36,6 +36,22 @@
             <input type = "file" name = "file"></input>
             <input type = "submit"></input>
         </form>
+        <form id='fptp_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+            <input type = "text"></input>
+            <input type = "submit"></input>
+        </form>
+        <form id='pref_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+            <input type = "text"></input>
+            <input type = "submit"></input>
+        </form>
+        <form id='appr_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+            <input type = "text"></input>
+            <input type = "submit"></input>
+        </form>
+        <form id='pair_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+            <input type = "text"></input>
+            <input type = "submit"></input>
+        </form>
     </body>
     <script type="text/javascript" src={{ url_for('static', filename='election_sim.js') }}></script>
 </html>

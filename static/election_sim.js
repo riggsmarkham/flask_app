@@ -26,37 +26,54 @@ function toggle_display(class_name, row_name, clicked_el){
             };
         }
     }
+    console.log(selection)
     //document.getElementById('displaything').innerHTML = selection;
 }
 
 function submit(){
     if(selection[2] == "fptp"){
         if (selection[3] == "file"){
-            reveal_file_submission()
+            reveal_file_submission();
         } else {
-
+            reveal_fptp_form();
         }
     } else if (selection[2] == "pref") {
         if (selection[3] == "file"){
-            reveal_file_submission()
+            reveal_file_submission();
         } else {
-
+            reveal_pref_form();
         }
     } else if (selection[2] == "appr") {
         if (selection[3] == "file"){
-            reveal_file_submission()
+            reveal_file_submission();
         } else {
-
+            reveal_appr_form()
         }
     } else {
         if (selection[3] == "file"){
             reveal_file_submission()
         } else {
-
+            reveal_pair_form()
         }
     }
 }
 
 function reveal_file_submission(){
     document.getElementById('sub_form').style.visibility = 'visible'
+}
+
+function reveal_fptp_form(){
+    document.getElementById('fptp_form').style.visibility = 'visible'
+}
+
+function reveal_pref_form(){
+    document.getElementById('pref_form').style.visibility = 'visible'
+}
+
+function reveal_appr_form(){
+    document.getElementById('appr_form').style.visibility = 'visible'
+}
+
+function reveal_pair_form(){
+    document.getElementById('pair_form').style.visibility = 'visible'
 }
