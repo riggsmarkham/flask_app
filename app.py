@@ -23,3 +23,6 @@ def upload_file():
         return render_template(
             "submission.html", filename = f.filename, type = "file"
         )
+@app.errorhandler(404)
+def page_not_found(error):
+   return render_template('404.html', title = '404'), 404
