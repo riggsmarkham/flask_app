@@ -33,26 +33,36 @@
             <button type="button" class="row5 file text" onclick="submit()">Ready?</button>
         </div>
         <!--<p id='displaything'></p>-->
-        <form id='sub_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-            <input type = "file" name = "file"></input>
-            <input type = "submit"></input>
-        </form>
-        <form id='fptp_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-            <input type = "text"></input>
-            <input type = "submit"></input>
-        </form>
-        <form id='pref_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-            <input type = "text"></input>
-            <input type = "submit"></input>
-        </form>
-        <form id='appr_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-            <input type = "text"></input>
-            <input type = "submit"></input>
-        </form>
-        <form id='pair_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-            <input type = "text"></input>
-            <input type = "submit"></input>
-        </form>
+        <div>
+            <form id='sub_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+                <input type = "file" name = "file"></input>
+                <input type = "submit"></input>
+            </form>
+        </div>
+        <div>
+            <form id='fptp_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+                <input type = "text"></input>
+                <input type = "submit"></input>
+            </form>
+        </div>
+        <div>
+            <form id='pref_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+                <input type = "text"></input>
+                <input type = "submit"></input>
+            </form>
+        </div>
+        <div>
+            <form id='appr_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+                <input type = "text"></input>
+                <input type = "submit"></input>
+            </form>
+        </div>
+        <div>
+            <form id='pair_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+                <input type = "text"></input>
+                <input type = "submit"></input>
+            </form>
+        </div>
     </body>
     <script type="text/javascript" src={{ url_for('static', filename='election_sim.js') }}></script>
 </html>
