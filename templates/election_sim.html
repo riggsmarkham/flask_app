@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <head>
         <meta charset="utf-8" />
         <title>Election Simulator</title>
@@ -9,46 +10,46 @@
         <p><a href="/">Go back to homepage</a></p>
         <h2>Choose how you want to use the app</h2>
         <div>
-            <button type="button" class="row1" onclick="toggle_display('sim', 'row1', this)">Simulate Election</button>
-            <button type="button" class="row1" onclick="toggle_display('eval', 'row1', this)">Evaluate Election</button>
+            <button type="button" class="row1" style="display: inline;" onclick="toggle_display('sim', 'row1', this)">Simulate Election</button>
+            <button type="button" class="row1" style="display: inline;" onclick="toggle_display('eval', 'row1', this)">Evaluate Election</button>
         </div>
         <div>
-            <button type="button" class="row2 sim" style="visibility: hidden;" onclick="toggle_display('polling', 'row2', this)">Polling Data</button>
-            <button type="button" class="row2 sim" style="visibility: hidden;" onclick="toggle_display('model', 'row2', this)">Ideological Model</button>
-            <button type="button" class="row2 eval" style="visibility: hidden;" onclick="toggle_display('polling', 'row2', this)">Polling Data</button>
+            <button type="button" class="row2 sim" onclick="toggle_display('polling', 'row2', this)">Polling Data</button>
+            <button type="button" class="row2 sim" onclick="toggle_display('model', 'row2', this)">Ideological Model</button>
+            <button type="button" class="row2 eval" onclick="toggle_display('polling', 'row2', this)">Polling Data</button>
         </div>
         <div>
-            <button type="button" class="row3 polling" style="visibility: hidden;" onclick="toggle_display('fptp', 'row3', this)">FPTP Polls</button>
-            <button type="button" class="row3 polling" style="visibility: hidden;" onclick="toggle_display('pref', 'row3', this)">Preference Lists</button>
-            <button type="button" class="row3 polling" style="visibility: hidden;" onclick="toggle_display('appr', 'row3', this)">Approval Polls</button>
-            <button type="button" class="row3 polling" style="visibility: hidden;" onclick="toggle_display('pair', 'row3', this)">Ranked Pairs</button>
-            <button type="button" class="row3 model" style="visibility: hidden;">Not Implemented Yet</button>
+            <button type="button" class="row3 polling" onclick="toggle_display('fptp', 'row3', this)">FPTP Polls</button>
+            <button type="button" class="row3 polling" onclick="toggle_display('pref', 'row3', this)">Preference Lists</button>
+            <button type="button" class="row3 polling" onclick="toggle_display('appr', 'row3', this)">Approval Polls</button>
+            <button type="button" class="row3 polling" onclick="toggle_display('pair', 'row3', this)">Ranked Pairs</button>
+            <button type="button" class="row3 model">Not Implemented Yet</button>
         </div>
         <div>
-            <button type="button" class="row4 fptp pref appr pair" style="visibility: hidden;" onclick="toggle_display('file', 'row4', this)">Input File</button>
-            <button type="button" class="row4 fptp pref appr pair" style="visibility: hidden;" onclick="toggle_display('text', 'row4', this)">Input Text</button>
+            <button type="button" class="row4 fptp pref appr pair" onclick="toggle_display('file', 'row4', this)">Input File</button>
+            <button type="button" class="row4 fptp pref appr pair" onclick="toggle_display('text', 'row4', this)">Input Text</button>
         </div>
         <div>
-            <button type="button" class="row5 file text" style="visibility: hidden;" onclick="submit()">Ready?</button>
+            <button type="button" class="row5 file text" onclick="submit()">Ready?</button>
         </div>
         <!--<p id='displaything'></p>-->
-        <form id='sub_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+        <form id='sub_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
             <input type = "file" name = "file"></input>
             <input type = "submit"></input>
         </form>
-        <form id='fptp_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+        <form id='fptp_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
             <input type = "text"></input>
             <input type = "submit"></input>
         </form>
-        <form id='pref_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+        <form id='pref_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
             <input type = "text"></input>
             <input type = "submit"></input>
         </form>
-        <form id='appr_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+        <form id='appr_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
             <input type = "text"></input>
             <input type = "submit"></input>
         </form>
-        <form id='pair_form' style="visibility: hidden;" action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+        <form id='pair_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
             <input type = "text"></input>
             <input type = "submit"></input>
         </form>

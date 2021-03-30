@@ -5,7 +5,7 @@ function toggle_display(class_name, row_name, clicked_el){
         selection.push(class_name);
         class_items = document.getElementsByClassName(class_name);
         for(el of class_items){
-            el.style.visibility = 'visible'
+            el.style.display = 'inline'
         };
         row_items = document.getElementsByClassName(row_name);
         for(el of row_items){
@@ -22,7 +22,7 @@ function toggle_display(class_name, row_name, clicked_el){
         if(document.getElementsByClassName(class_name)[0]){
             next_row_items = document.getElementsByClassName(document.getElementsByClassName(class_name)[0].classList[0])
             for(el of next_row_items){
-                el.style.visibility = 'hidden'
+                el.style.display = 'none'
             };
         }
     }
