@@ -10,27 +10,27 @@
         <p><a href="/">Go back to homepage</a></p>
         <h2>Choose how you want to use the app</h2>
         <div>
-            <button type="button" class="row1" style="display: inline;" onclick="toggle_display('sim', 'row1', this)">Simulate Election</button>
-            <button type="button" class="row1" style="display: inline;" onclick="toggle_display('eval', 'row1', this)">Evaluate Election</button>
+            <button id="1-sim" onclick="reveal(['2-poll','2-ideo'], this)">Simulate Election</button>
+            <button id="1-eval" onclick="reveal(['2-eval'], this)">Evaluate Election</button>
         </div>
         <div>
-            <button type="button" class="row2 sim" onclick="toggle_display('polling', 'row2', this)">Polling Data</button>
-            <button type="button" class="row2 sim" onclick="toggle_display('model', 'row2', this)">Ideological Model</button>
-            <button type="button" class="row2 eval" onclick="toggle_display('polling', 'row2', this)">Polling Data</button>
+            <button id="2-poll" onclick="reveal(['3-fptp','3-pref','3-appr','3-pair'], this)">Polling Data</button>
+            <button id="2-ideo" onclick="reveal(['3-fptp','3-pref','3-appr','3-pair'], this)">Ideological Model</button>
+            <button id="2-eval" onclick="reveal(['3-no'], this)">Polling Data</button>
         </div>
         <div>
-            <button type="button" class="row3 polling" onclick="toggle_display('fptp', 'row3', this)">FPTP Polls</button>
-            <button type="button" class="row3 polling" onclick="toggle_display('pref', 'row3', this)">Preference Lists</button>
-            <button type="button" class="row3 polling" onclick="toggle_display('appr', 'row3', this)">Approval Polls</button>
-            <button type="button" class="row3 polling" onclick="toggle_display('pair', 'row3', this)">Ranked Pairs</button>
-            <button type="button" class="row3 model">Not Implemented Yet</button>
+            <button id="3-fptp" onclick="reveal(['4-file','4-text'], this)">FPTP Polls</button>
+            <button id="3-pref" onclick="reveal(['4-file','4-text'], this)">Preference Lists</button>
+            <button id="3-appr" onclick="reveal(['4-file','4-text'], this)">Approval Polls</button>
+            <button id="3-pair" onclick="reveal(['4-file','4-text'], this)">Ranked Pairs</button>
+            <button id="3-no">Not Implemented Yet</button>
         </div>
         <div>
-            <button type="button" class="row4 fptp pref appr pair" onclick="toggle_display('file', 'row4', this)">Input File</button>
-            <button type="button" class="row4 fptp pref appr pair" onclick="toggle_display('text', 'row4', this)">Input Text</button>
+            <button id="4-file" onclick="reveal(['5-sub'], this)">Input File</button>
+            <button id="4-text" onclick="reveal(['5-sub'], this)">Input Text</button>
         </div>
         <div>
-            <button type="button" class="row5 file text" onclick="submit()">Ready?</button>
+            <button id="5-sub" onclick="submit()">Ready?</button>
         </div>
         <!--<p id='displaything'></p>-->
         <div>
