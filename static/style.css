@@ -1,5 +1,4 @@
 button {
-    display: none;
     background-color: #1e29b9;
     border: none;
     color: white;
@@ -13,7 +12,6 @@ button {
 }
 
 button:hover {
-    display: none;
     background-color: #5056b4;
     border: none;
     color: black;
@@ -27,7 +25,6 @@ button:hover {
 }
   
 button:disabled {
-    display: none;
     background-color: #464868;
     border: none;
     color: black;
@@ -42,4 +39,9 @@ button:disabled {
 
 form {
     display: none;
+}
+
+div {
+    display: flex;
+    justify-content: center;
 }

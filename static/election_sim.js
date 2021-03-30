@@ -3,6 +3,8 @@ button_list = document.getElementsByTagName('button');
 for(el of button_list){
     if(el.id.slice(0,1) == "1"){
         el.style.display = 'inline';
+    } else {
+        el.style.display = 'none';
     }
 }
 function reveal(el_list, clicked_el){
@@ -65,24 +67,4 @@ function submit(){
             reveal_pair_form();
         }
     }
-}
-
-function reveal_file_submission(){
-    document.getElementById('sub_form').style.visibility = 'visible';
-}
-
-function reveal_fptp_form(){
-    document.getElementById('fptp_form').style.visibility = 'visible';
-}
-
-function reveal_pref_form(){
-    document.getElementById('pref_form').style.visibility = 'visible';
-}
-
-function reveal_appr_form(){
-    document.getElementById('appr_form').style.visibility = 'visible';
-}
-
-function reveal_pair_form(){
-    document.getElementById('pair_form').style.visibility = 'visible';
 }
