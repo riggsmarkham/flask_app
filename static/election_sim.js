@@ -41,30 +41,30 @@ function reveal(el_list, clicked_el){
     //document.getElementById('displaything').innerHTML = selection;
 }
 
-function submit(){
+function submit(this){
     if(selection[2] == "fptp"){
         if (selection[3] == "file"){
-            reveal_file_submission();
+            reveal(['file_form'],this)
         } else {
-            reveal_fptp_form();
+            reveal(['fptp_form'],this)
         }
     } else if (selection[2] == "pref") {
         if (selection[3] == "file"){
-            reveal_file_submission();
+            reveal(['file_form'],this)
         } else {
-            reveal_pref_form();
+            reveal(['pref_form'],this)
         }
     } else if (selection[2] == "appr") {
         if (selection[3] == "file"){
-            reveal_file_submission();
+            reveal(['file_form'],this)
         } else {
-            reveal_appr_form();
+            reveal(['appr_form'],this)
         }
     } else {
         if (selection[3] == "file"){
-            reveal_file_submission();
+            reveal(['file_form'],this)
         } else {
-            reveal_pair_form();
+            reveal(['pair_form'],this)
         }
     }
 }

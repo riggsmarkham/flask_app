@@ -30,11 +30,11 @@
             <button id="4-text" onclick="reveal(['5-sub'], this)">Input Text</button>
         </div>
         <div>
-            <button id="5-sub" onclick="submit()">Ready?</button>
+            <button id="5-sub" onclick="submit(this)">Ready?</button>
         </div>
         <!--<p id='displaything'></p>-->
         <div>
-            <form id='sub_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+            <form id='file_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
                 <input type = "file" name = "file"></input>
                 <input type = "submit"></input>
             </form>
