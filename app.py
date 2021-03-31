@@ -30,3 +30,6 @@ def page_not_found(error):
 @app.errorhandler(400)
 def page_not_found(error):
    return render_template('400.html')
+
+if __name__ == "__main__" :
+    app.run()
