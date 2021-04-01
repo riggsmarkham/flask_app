@@ -7,6 +7,8 @@ for(el of button_list){
         el.style.display = 'none';
     }
 }
+
+
 function reveal(el_list, clicked_el){
     button_list = document.getElementsByTagName('button');
     if(!clicked_el.classList.contains('clicked')){
@@ -36,12 +38,16 @@ function reveal(el_list, clicked_el){
                 el.style.display = 'none';
             }
         }
+        for(el of document.getElementsByTagName('form')){
+            el.style.display = 'none';
+        }
     }
     console.log(selection);
     //document.getElementById('displaything').innerHTML = selection;
 }
 
 function submit(el){
+    document.getElementById('fptp_input').style.display = 'none';
     if(selection[2] == "fptp"){
         if (selection[3] == "file"){
             reveal(['file_form'],el)
@@ -67,4 +73,11 @@ function submit(el){
             reveal(['pair_form'],el)
         }
     }
+}
+
+function populate_fptp_form(){
+    val = document.getElementById("fptp_num").value;
+    document.getElementById("fptp_textarea").rows = val;
+    document.getElementById("fptp_input").style.display='inline';
+    document.getElementById("fptp_setup").style.display='none';
 }

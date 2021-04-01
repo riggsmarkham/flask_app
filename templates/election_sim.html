@@ -11,23 +11,24 @@
         <h2>Choose how you want to use the app</h2>
         <div>
             <button id="1-sim" onclick="reveal(['2-poll','2-ideo'], this)">Simulate Election</button>
-            <button id="1-eval" onclick="reveal(['2-eval'], this)">Evaluate Election</button>
+            <button id="1-eval" onclick="reveal(['2-no'], this)">Evaluate Election</button>
         </div>
         <div>
             <button id="2-poll" onclick="reveal(['3-fptp','3-pref','3-appr','3-pair'], this)">Polling Data</button>
-            <button id="2-ideo" onclick="reveal(['3-fptp','3-pref','3-appr','3-pair'], this)">Ideological Model</button>
-            <button id="2-eval" onclick="reveal(['3-no'], this)">Polling Data</button>
+            <button id="2-ideo" onclick="reveal(['3-no'], this)">Ideological Model</button>
+            <button id="2-no">Not Implemented Yet</button>
         </div>
         <div>
             <button id="3-fptp" onclick="reveal(['4-file','4-text'], this)">FPTP Polls</button>
             <button id="3-pref" onclick="reveal(['4-file','4-text'], this)">Preference Lists</button>
-            <button id="3-appr" onclick="reveal(['4-file','4-text'], this)">Approval Polls</button>
-            <button id="3-pair" onclick="reveal(['4-file','4-text'], this)">Ranked Pairs</button>
+            <button id="3-appr" onclick="reveal(['4-no'], this)">Approval Polls</button>
+            <button id="3-pair" onclick="reveal(['4-no'], this)">Ranked Pairs</button>
             <button id="3-no">Not Implemented Yet</button>
         </div>
         <div>
             <button id="4-file" onclick="reveal(['5-sub'], this)">Input File</button>
             <button id="4-text" onclick="reveal(['5-sub'], this)">Input Text</button>
+            <button id="4-no">Not Implemented Yet</button>
         </div>
         <div>
             <button id="5-sub" onclick="submit(this)">Ready?</button>
@@ -41,8 +42,14 @@
         </div>
         <div>
             <form id='fptp_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-                <input type = "text"></input>
-                <input type = "submit"></input>
+                <div id="fptp_setup">
+                    <input type = "text" id='fptp_num'>How many candidates are there?</input>
+                    <button onclick="populate_fptp_form()">Submit</button>
+                </div>
+                <div id="fptp_input">
+                    <textarea id="fptp_textarea" rows="5" cols="2" name="text" placeholder="Enter name"></textarea>
+                    <input type = "submit" value="Submit"></input>
+                </div>
             </form>
         </div>
         <div>
