@@ -7,14 +7,10 @@
     </head>
     <body>
         <h3><a href="/election_sim">Go back to election simulator</a></h3>
-        {% if type == "file": %}
-        <p>Your file {{filename}} was successfully uploaded</p>
-        {% else %}
-        <p>Your input was received</p>
-        {% endif %}
-        <form action='/result', method='post'>
+        <p>Your file {{filename}} was successfully uploaded and run</p>
+        <!-- <form action='/result', method='post'>
             <input name="filename" value={{filename}}/>
             <button type="submit">Process</button>
-        </form>
+        </form> -->
     </body>
 </html>
