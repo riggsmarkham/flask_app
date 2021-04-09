@@ -35,9 +35,9 @@
         </div>
         <!--<p id='displaything'></p>-->
         <div>
-            <form id='file_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+            <form id='file_form'>
                 <input type = "file" name = "file"></input>
-                <input type = "submit"></input>
+                <input id = 'file_form_submission' type = "submit"></input>
             </form>
         </div>
         <div>
@@ -71,5 +71,6 @@
             </form>
         </div>
     </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src={{ url_for('static', filename='election_sim.js') }}></script>
 </html>
