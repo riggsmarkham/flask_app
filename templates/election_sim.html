@@ -33,7 +33,6 @@
         <div>
             <button id="5-sub" onclick="submit(this)">Ready?</button>
         </div>
-        <!--<p id='displaything'></p>-->
         <div>
             <form id='file_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
                 <input type = "file" name = "file"></input>
@@ -41,13 +40,12 @@
             </form>
         </div>
         <div>
-            <form id='fptp_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+            <form id='fptp_form'>
                 <div id="fptp_setup">
-                    <input type = "text" id='fptp_num'>How many candidates are there?</input>
-                    <button onclick="populate_fptp_form()">Submit</button>
+                    <p>How many candidates are there?<input type = "text" id='fptp_num'/></p>
+                    <button type="button" id="0-fptp_form" onclick="populate_fptp_form()">Submit</button>
                 </div>
                 <div id="fptp_input">
-                    <textarea id="fptp_textarea" rows="5" cols="2" name="text" placeholder="Enter name"></textarea>
                     <input type = "submit" value="Submit"></input>
                 </div>
             </form>

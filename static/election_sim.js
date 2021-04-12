@@ -1,5 +1,13 @@
 var selection = [];
-button_list = document.getElementsByTagName('button');
+total_button_list = document.getElementsByTagName('button');
+button_list = Array(0);
+for(el of total_button_list){
+    if(el.id.slice(0,1) != "0"){
+        button_list.push(el);
+    }
+}
+console.log(total_button_list.length);
+console.log(button_list.length);
 for(el of button_list){
     if(el.id.slice(0,1) == "1"){
         el.style.display = 'inline';
@@ -7,7 +15,6 @@ for(el of button_list){
         el.style.display = 'none';
     }
 }
-
 
 function reveal(el_list, clicked_el){
     button_list = document.getElementsByTagName('button');
@@ -77,7 +84,7 @@ function submit(el){
 
 function populate_fptp_form(){
     val = document.getElementById("fptp_num").value;
-    document.getElementById("fptp_textarea").rows = val;
+    console.log(val);
     document.getElementById("fptp_input").style.display='inline';
     document.getElementById("fptp_setup").style.display='none';
 }
