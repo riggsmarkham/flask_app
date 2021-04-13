@@ -41,7 +41,7 @@ form {
     display: none;
 }
 
-div {
+.buttondiv {
     display: flex;
     justify-content: center;
 }

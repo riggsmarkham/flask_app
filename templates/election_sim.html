@@ -10,63 +10,82 @@
         <p><a href="/">Go back to homepage</a></p>
         <h2>Choose how you want to use the app</h2>
         <div>
-            <button id="1-sim" onclick="reveal(['2-poll','2-ideo'], this)">Simulate Election</button>
-            <button id="1-eval" onclick="reveal(['2-no'], this)">Evaluate Election</button>
+            <div class="buttondiv">
+                <button id="1-sim" onclick="reveal(['2-poll','2-ideo'], this)">Simulate Election</button>
+                <button id="1-eval" onclick="reveal(['2-no'], this)">Evaluate Election</button>
+            </div>
+            <div class="buttondiv">
+                <button id="2-poll" onclick="reveal(['3-fptp','3-pref','3-appr','3-pair'], this)">Polling Data</button>
+                <button id="2-ideo" onclick="reveal(['3-no'], this)">Ideological Model</button>
+                <button id="2-no">Not Implemented Yet</button>
+            </div>
+            <div class="buttondiv">
+                <button id="3-fptp" onclick="reveal(['4-file','4-text'], this)">FPTP Polls</button>
+                <button id="3-pref" onclick="reveal(['4-no'], this)">Preference Lists</button>
+                <button id="3-appr" onclick="reveal(['4-file','4-text'], this)">Approval Polls</button>
+                <button id="3-pair" onclick="reveal(['4-no'], this)">Ranked Pairs</button>
+                <button id="3-no">Not Implemented Yet</button>
+            </div>
+            <div class="buttondiv">
+                <button id="4-file" onclick="reveal(['5-sub'], this)">Input File</button>
+                <button id="4-text" onclick="reveal(['5-sub'], this)">Input Text</button>
+                <button id="4-no">Not Implemented Yet</button>
+            </div>
+            <div class="buttondiv">
+                <button id="5-sub" onclick="submit(this)">Ready?</button>
+            </div>
         </div>
         <div>
-            <button id="2-poll" onclick="reveal(['3-fptp','3-pref','3-appr','3-pair'], this)">Polling Data</button>
-            <button id="2-ideo" onclick="reveal(['3-no'], this)">Ideological Model</button>
-            <button id="2-no">Not Implemented Yet</button>
-        </div>
-        <div>
-            <button id="3-fptp" onclick="reveal(['4-file','4-text'], this)">FPTP Polls</button>
-            <button id="3-pref" onclick="reveal(['4-file','4-text'], this)">Preference Lists</button>
-            <button id="3-appr" onclick="reveal(['4-no'], this)">Approval Polls</button>
-            <button id="3-pair" onclick="reveal(['4-no'], this)">Ranked Pairs</button>
-            <button id="3-no">Not Implemented Yet</button>
-        </div>
-        <div>
-            <button id="4-file" onclick="reveal(['5-sub'], this)">Input File</button>
-            <button id="4-text" onclick="reveal(['5-sub'], this)">Input Text</button>
-            <button id="4-no">Not Implemented Yet</button>
-        </div>
-        <div>
-            <button id="5-sub" onclick="submit(this)">Ready?</button>
-        </div>
-        <div>
-            <form id='file_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-                <input type = "file" name = "file"></input>
-                <input id = 'file_form_submission' type = "submit"></input>
-            </form>
-        </div>
-        <div>
-            <form id='fptp_form'>
-                <div id="fptp_setup">
-                    <p>How many candidates are there?<input type = "text" id='fptp_num'/></p>
-                    <button type="button" id="0-fptp_form" onclick="populate_fptp_form()">Submit</button>
-                </div>
-                <div id="fptp_input">
-                    <input type = "submit" value="Submit"></input>
-                </div>
-            </form>
-        </div>
-        <div>
-            <form id='pref_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-                <input type = "text"></input>
-                <input type = "submit"></input>
-            </form>
-        </div>
-        <div>
-            <form id='appr_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-                <input type = "text"></input>
-                <input type = "submit"></input>
-            </form>
-        </div>
-        <div>
-            <form id='pair_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-                <input type = "text"></input>
-                <input type = "submit"></input>
-            </form>
+            <div>
+                <form id='file_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+                    <input type = "file" name = "file"></input>
+                    <input id = 'file_form_submission' type = "submit"></input>
+                </form>
+            </div>
+            <div>
+                <form id='fptp_form'>
+                    <div id="fptp_setup">
+                        <p>How many candidates are there?<input type = "text" id='fptp_num'/></p>
+                        <button type="button" id="0-fptp_form" onclick="populate_fptp_form()">Submit</button>
+                    </div>
+                    <div id="fptp_input">
+                        <input id="fptp_input_sub" type = "submit" value="Submit"></input>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <form id='pref_form'>
+                    <div id="pref_setup">
+                        <p>How many candidates are there?<input type = "text" id='pref_num'/></p>
+                        <button type="button" id="0-pref_form" onclick="populate_pref_form()">Submit</button>
+                    </div>
+                    <div id="pref_input">
+                        <input id="pref_input_sub" type = "submit" value="Submit"></input>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <form id='appr_form'>
+                    <div id="appr_setup">
+                        <p>How many candidates are there?<input type = "text" id='appr_num'/></p>
+                        <button type="button" id="0-appr_form" onclick="populate_appr_form()">Submit</button>
+                    </div>
+                    <div id="appr_input">
+                        <input id="appr_input_sub" type = "submit" value="Submit"></input>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <form id='pair_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+                    <div id="pair_setup">
+                        <p>How many candidates are there?<input type = "text" id='pair_num'/></p>
+                        <button type="button" id="0-pair_form" onclick="populate_pair_form()">Submit</button>
+                    </div>
+                    <div id="pair_input">
+                        <input id="pair_input_sub" type = "submit" value="Submit"></input>
+                    </div>
+                </form>
+            </div>
         </div>
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
