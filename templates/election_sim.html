@@ -8,7 +8,6 @@
     </head>
     <body>
         <p><a href="/">Go back to homepage</a></p>
-        <h2>Choose how you want to use the app</h2>
         <div>
             <div class="buttondiv">
                 <button id="1-sim" onclick="reveal(['2-poll','2-ideo'], this)">Simulate Election</button>
@@ -32,62 +31,79 @@
                 <button id="4-no">Not Implemented Yet</button>
             </div>
             <div class="buttondiv">
-                <button id="5-sub" onclick="submit(this)">Ready?</button>
+                <button id="5-sub" onclick="submit(this)">Input Data</button>
             </div>
         </div>
         <div>
-            <div>
-                <form id='file_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
-                    <input type = "file" name = "file"></input>
-                    <input id = 'file_form_submission' type = "submit"></input>
-                </form>
+            <div class='formbox' id='file_form'>
+                <input type = "file" name = "file"></input>
+                <input id = 'file_form_submission' type = "submit"></input>
             </div>
-            <div>
-                <form id='fptp_form'>
-                    <div id="fptp_setup">
-                        <p>How many candidates are there?<input type = "text" id='fptp_num'/></p>
-                        <button type="button" id="0-fptp_form" onclick="populate_fptp_form()">Submit</button>
-                    </div>
-                    <div id="fptp_input">
-                        <input id="fptp_input_sub" type = "submit" value="Submit"></input>
-                    </div>
-                </form>
+            <div class='formbox' id='text_form'>
+                <div id='cand_setup'>
+                    <p>Number of Candidates: <input type="number" id='cand_num'/></p>
+                    <button type="button" id="0-cand_num_form" onclick="populate_cand_table()">Submit</button>
+                </div>
+                <div id='cand_table'>
+                    <p>Enter Names of Candidates: </p>
+                    <p id='pref_q'>Length of Each Preference List: <input type="number" id='pref_len'/></p>
+                    <button type="button" id="0-cand_form" onclick="populate_poll_table()">Submit</button>
+                </div>
+                <div id='poll_table'>
+                    <p>Enter Polling Data: </p>
+                    <p id='ss_q'>Sample Size of Poll: <input type="number" id='ss_num'/></p>
+                    <button type="button" id="0-cand_form" onclick="process_input()">Submit</button>
+                </div>
             </div>
-            <div>
+            <!-- <div class='formbox' id='fptp_form'>
+                <div id="fptp_setup">
+                    <p>Number of Candidates: <input type = "text" id='fptp_num'/></p>
+                    <button type="button" id="0-fptp_form" onclick="populate_fptp_form()">Submit</button>
+                </div>
+                <div id="fptp_input">
+                    <p>Sample Size of Poll: <input type = "text" id='fptp_ss'/></p>
+                    <button type = "submit" id="0-fptp_input_sub">Submit</button>
+                </div>
+            </div>
+            <div class='formbox'>
                 <form id='pref_form'>
                     <div id="pref_setup">
-                        <p>How many candidates are there?<input type = "text" id='pref_num'/></p>
+                        <p>Number of Candidates: <input type = "text" id='pref_num'/></p>
+                        <p>Length of Each Preference List: <input type = "text" id='pref_list_length'/></p>
                         <button type="button" id="0-pref_form" onclick="populate_pref_form()">Submit</button>
                     </div>
                     <div id="pref_input">
-                        <input id="pref_input_sub" type = "submit" value="Submit"></input>
+                        <p>Sample Size: <input type = "text" id='pref_ss'/></p>
+                        <button type = "submit" id="0-pref_input_sub">Submit</button>
                     </div>
                 </form>
             </div>
-            <div>
+            <div class='formbox'>
                 <form id='appr_form'>
                     <div id="appr_setup">
-                        <p>How many candidates are there?<input type = "text" id='appr_num'/></p>
+                        <p>Number of Candidates: <input type = "text" id='appr_num'/></p>
                         <button type="button" id="0-appr_form" onclick="populate_appr_form()">Submit</button>
                     </div>
                     <div id="appr_input">
-                        <input id="appr_input_sub" type = "submit" value="Submit"></input>
+                        <p>Sample Size: <input type = "text" id='appr_ss'/></p>
+                        <button type = "submit" id="0-appr_input_sub">Submit</button>
                     </div>
                 </form>
             </div>
-            <div>
-                <form id='pair_form' action = "/election_sim/submission" method = "POST" enctype = "multipart/form-data">
+            <div class='formbox'>
+                <form id='pair_form'>
                     <div id="pair_setup">
-                        <p>How many candidates are there?<input type = "text" id='pair_num'/></p>
+                        <p>Number of Candidates: <input type = "text" id='pair_num'/></p>
                         <button type="button" id="0-pair_form" onclick="populate_pair_form()">Submit</button>
                     </div>
                     <div id="pair_input">
-                        <input id="pair_input_sub" type = "submit" value="Submit"></input>
+                        <p>Sample Size: <input type = "text" id='pair_ss'/></p>
+                        <button type = "submit" id="0-pair_input_sub">Submit</button>
                     </div>
                 </form>
-            </div>
+            </div> -->
         </div>
     </body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
     <script type="text/javascript" src={{ url_for('static', filename='election_sim.js') }}></script>
 </html>

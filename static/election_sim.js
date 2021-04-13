@@ -1,9 +1,12 @@
 var selection = [];
 total_button_list = document.getElementsByTagName('button');
 button_list = Array(0);
+bot_button_list = Array(0);
 for(el of total_button_list){
     if(el.id.slice(0,1) != "0"){
         button_list.push(el);
+    } else {
+        bot_button_list.push(el);
     }
 }
 
@@ -16,7 +19,6 @@ for(el of button_list){
 }
 
 function reveal(el_list, clicked_el){
-    button_list = document.getElementsByTagName('button');
     if(!clicked_el.classList.contains('clicked')){
         clicked_el.classList.add('clicked');
         selection.push(clicked_el.id.slice(2));
@@ -44,73 +46,82 @@ function reveal(el_list, clicked_el){
                 el.style.display = 'none';
             }
         }
-        for(el of document.getElementsByTagName('form')){
-            el.style.display = 'none';
-        }
     }
     console.log(selection);
-    //document.getElementById('displaything').innerHTML = selection;
 }
 
 function submit(el){
-    document.getElementById('fptp_input').style.display = 'none';
-    if(selection[2] == "fptp"){
-        if (selection[3] == "file"){
-            reveal(['file_form'],el)
-        } else {
-            reveal(['fptp_form'],el)
-        }
-    } else if (selection[2] == "pref") {
-        if (selection[3] == "file"){
-            reveal(['file_form'],el)
-        } else {
-            reveal(['pref_form'],el)
-        }
-    } else if (selection[2] == "appr") {
-        if (selection[3] == "file"){
-            reveal(['file_form'],el)
-        } else {
-            reveal(['appr_form'],el)
-        }
+    el.classList.add('clicked');
+    for(but of button_list){
+        but.style.display = 'none';
+    }
+    if (selection[3] == "file"){
+        document.getElementById('file_form').style.display = 'block';
     } else {
-        if (selection[3] == "file"){
-            reveal(['file_form'],el)
-        } else {
-            reveal(['pair_form'],el)
-        }
+        document.getElementById('cand_table').style.display = 'none';
+        document.getElementById('poll_table').style.display = 'none';
+        document.getElementById('text_form').style.display = 'block';
     }
 }
 
-function populate_fptp_form(){
-    var val = document.getElementById("fptp_num").value;
-    addTable(val,"Candidate Name", "Percent Support", "fptp_input", "fptp_input_sub")
-    document.getElementById("fptp_input").style.display='inline';
-    document.getElementById("fptp_setup").style.display='none';
-}
-
-function populate_appr_form(){
-    var val = document.getElementById("appr_num").value;
-    addTable(val,"Candidate Name", "Percent Approval", "appr_input", "appr_input_sub")
-    document.getElementById("appr_input").style.display='inline';
-    document.getElementById("appr_setup").style.display='none';
-}
-
-function addTable(val, col_1, col_2, parent_id, child_id){
+function populate_cand_table(){
+    var val = document.getElementById("cand_num").value;
     const newTable = document.createElement("table");
+    newTable.id="cands";
     num = parseInt(val);
+    for (i = 0; i < num; i++){
+        var r = newTable.insertRow();
+        var c = r.insertCell();
+        c.innerHTML = "<input type = 'text'></input>";
+    }
+    const parent = document.getElementById("cand_table");
+    const child = document.getElementById("pref_q");
+    parent.insertBefore(newTable, child);
+    document.getElementById("cand_setup").style.display='none';
+    if(selection[2] != "pref"){
+        child.style.display = 'none';
+    }
+    document.getElementById("cand_table").style.display='block';
+}
+
+function populate_poll_table(){
+    const childArray = Array.from(document.getElementById("cands").childNodes);
+    var candNames = Array(0);
+    for(el of childArray){
+        candNames.push(el.value);
+    }
+    var table;
+    if(selection[2] == "fptp"){
+        table = create_poll_table_element(candNames, "Candidate Name", "Poll Result");
+    } else if (selection[2] == "pref"){
+        var val = document.getElementById("pref_len").value;
+
+    } else if (selection[2] == "appr"){
+        table = create_poll_table_element(candNames, "Candidate Name", "Approval Rating");
+    } else if (selection[2] == "pair"){
+
+    }
+    const parent = document.getElementById("poll_table");
+    const child = document.getElementById("ss_q");
+    parent.insertBefore(table, child);
+    document.getElementById("cand_table").style.display='none';
+    document.getElementById("poll_table").style.display='block';
+}
+
+function create_poll_table_element(array, col_1, col_2){
+    const newTable = document.createElement("table");
+    newTable.id="polls";
     var r = newTable.insertRow();
     var c = r.insertCell();
     c.innerHTML = col_1;
-    c = r.insertCell();
+    var c = r.insertCell();
     c.innerHTML = col_2;
-    for (i = 1; i < num + 1; i++){
-        r = newTable.insertRow();
-        c = r.insertCell();
-        c.innerHTML = "<input id=txt" + i.toString() + "-1 type = 'text'></input>";
-        c = r.insertCell();
-        c.innerHTML = "<input id=txt" + i.toString() + "-2 type = 'text'></input>";
+    for (i = 0; i < array.length; i++){
+        var r = newTable.insertRow();
+        var c = r.insertCell();
+        c.innerHTML = array[i];
+        var c = r.insertCell();
+        c.innerHTML = "<input type = 'number'></input>";
     }
-    var parent = document.getElementById(parent_id);
-    var child = document.getElementById(child_id);
-    parent.insertBefore(newTable, child);
+    return newTable;
 }
