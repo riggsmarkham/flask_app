@@ -85,16 +85,18 @@ function populate_cand_table(){
 }
 
 function populate_poll_table(){
-    const childArray = Array.from(document.getElementById("cands").childNodes);
+    const childArray = Array.from(document.getElementById("cands").childNodes[0].childNodes);
+    console.log(childArray.length);
+    console.log(childArray[0].childNodes[0].nodeName);
     var candNames = Array(0);
     for(el of childArray){
-        candNames.push(el.value);
+        candNames.push(el.childNodes[0].childNodes[0].value);
     }
     var table;
     if(selection[2] == "fptp"){
         table = create_poll_table_element(candNames, "Candidate Name", "Poll Result");
     } else if (selection[2] == "pref"){
-        var val = document.getElementById("pref_len").value;
+        //var val = document.getElementById("pref_len").value;
 
     } else if (selection[2] == "appr"){
         table = create_poll_table_element(candNames, "Candidate Name", "Approval Rating");
