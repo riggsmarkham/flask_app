@@ -86,8 +86,6 @@ function populate_cand_table(){
 
 function populate_poll_table(){
     const childArray = Array.from(document.getElementById("cands").childNodes[0].childNodes);
-    console.log(childArray.length);
-    console.log(childArray[0].childNodes[0].nodeName);
     var candNames = Array(0);
     for(el of childArray){
         candNames.push(el.childNodes[0].childNodes[0].value);
@@ -126,4 +124,24 @@ function create_poll_table_element(array, col_1, col_2){
         c.innerHTML = "<input type = 'number'></input>";
     }
     return newTable;
+}
+
+function process_input(){
+    const childNameArray = Array.from(document.getElementById("cands").childNodes[0].childNodes);
+    var candNames = Array(0);
+    for(el of childNameArray){
+        candNames.push(el.childNodes[0].childNodes[0].value);
+    }
+    const childPollArray = Array.from(document.getElementById("polls").childNodes[0].childNodes);
+    var pollNums = Array(0);
+    for(el of childPollArray){
+        pollNums.push(el.childNodes[1].childNodes[0].value);
+    }
+    pollNums.shift();
+    var sample_size = document.getElementById("ss_num").value;
+    var candString = candNames.join();
+    var pollString = pollNums.join();
+    console.log(candString);
+    console.log(pollString);
+    console.log(sample_size);
 }
