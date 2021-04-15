@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 import os
+import glob
 import sim
 
 app = Flask(__name__)
@@ -16,15 +17,25 @@ def election_app():
 
 @app.route('/election_sim/submission', methods = ['POST'])
 def upload_file():
-   if request.method == 'POST':
+    pathString = glob.escape(os.path.join(app.instance_path, 'uploads', ''))
+    fileUploaded = (len(glob.glob(pathString + '*')) != 0)
+    if request.method == 'POST' and not fileUploaded:
         f = request.files['file']
         fname = secure_filename(f.filename)
         f.save(os.path.join(app.instance_path, 'uploads', fname))
         sim.doAllSystems('Simulation', 'instance/uploads/' + fname, sim.NUM, False)
         os.remove(os.path.join(app.instance_path, 'uploads', fname))
-        return render_template(
-            "submission.html", filename = fname
-        )
+    return render_template("submission.html", filename = fname)
+
+@app.route('/election_sim/text_submit', methods = ['POST'])
+def upload_text():
+    pathString = glob.escape(os.path.join(app.instance_path, 'uploads', ''))
+    fileUploaded = (len(glob.glob(pathString + '*')) != 0)
+    if request.method == 'POST' and not fileUploaded:
+        text = request.form['text']
+        with open(os.path.join(app.instance_path, 'uploads', 'userUpload.txt'), 'w') as f:
+            f.write(text)
+    return render_template("election_sim.html")
 
 @app.errorhandler(404)
 def page_not_found(error):

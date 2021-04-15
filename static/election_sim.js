@@ -144,4 +144,21 @@ function process_input(){
     console.log(candString);
     console.log(pollString);
     console.log(sample_size);
+    var text = '1\n'+candString+'\n'+pollString+'\n'+sample_size+'\n';
+    if(selection[2] != "pref"){
+        text += '1';
+    } else {
+        text += document.getElementById('pref_len').value;
+    }
+    var formData = new FormData();
+    formData.append('text', text);
+    $.ajax({
+        url: '/election_sim/text_submit',
+        type: 'POST',
+        cache: false,
+        data: formData,
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+    }).fail(function(res) {});
 }

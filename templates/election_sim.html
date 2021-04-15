@@ -21,17 +21,18 @@
             <div class="buttondiv">
                 <button id="3-fptp" onclick="reveal(['4-file','4-text'], this)">FPTP Polls</button>
                 <button id="3-pref" onclick="reveal(['4-no'], this)">Preference Lists</button>
-                <button id="3-appr" onclick="reveal(['4-file','4-text'], this)">Approval Polls</button>
+                <button id="3-appr" onclick="reveal(['4-no'], this)">Approval Polls</button>
                 <button id="3-pair" onclick="reveal(['4-no'], this)">Ranked Pairs</button>
                 <button id="3-no">Not Implemented Yet</button>
             </div>
             <div class="buttondiv">
-                <button id="4-file" onclick="reveal(['5-sub'], this)">Input File</button>
+                <button id="4-file" onclick="reveal(['5-no'], this)">Input File</button>
                 <button id="4-text" onclick="reveal(['5-sub'], this)">Input Text</button>
                 <button id="4-no">Not Implemented Yet</button>
             </div>
             <div class="buttondiv">
                 <button id="5-sub" onclick="submit(this)">Input Data</button>
+                <button id="5-no">Not Implemented Yet</button>
             </div>
         </div>
         <div>
@@ -57,6 +58,10 @@
             </div>
         </div>
     </body>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+    </script>
     <script type="text/javascript" src={{ url_for('static', filename='election_sim.js') }}></script>
 </html>
