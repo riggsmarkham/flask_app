@@ -15,7 +15,7 @@ def home():
 def election_app():
     return render_template("election_sim.html")
 
-@app.route('/election_sim/submission', methods = ['POST'])
+@app.route('/election_sim/file_submit', methods = ['POST'])
 def upload_file():
     pathString = glob.escape(os.path.join(app.instance_path, 'uploads', ''))
     fileUploaded = (len(glob.glob(pathString + '*')) != 0)
@@ -23,9 +23,10 @@ def upload_file():
         f = request.files['file']
         fname = secure_filename(f.filename)
         f.save(os.path.join(app.instance_path, 'uploads', fname))
-        sim.doAllSystems('Simulation', 'instance/uploads/' + fname, sim.NUM, False)
-        os.remove(os.path.join(app.instance_path, 'uploads', fname))
-    return render_template("submission.html", filename = fname)
+    return render_template("election_sim.html")
+    #     sim.doAllSystems('Simulation', 'instance/uploads/' + fname, sim.NUM, False)
+    #     os.remove(os.path.join(app.instance_path, 'uploads', fname))
+    # return render_template("submission.html", filename = fname)
 
 @app.route('/election_sim/text_submit', methods = ['POST'])
 def upload_text():

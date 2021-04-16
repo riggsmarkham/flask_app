@@ -161,4 +161,27 @@ function process_input(){
         contentType: false
     }).done(function(res) {
     }).fail(function(res) {});
+    const box = document.getElementById("process_box");
+    document.getElementById('pb_cand_num').innerHTML += candNames.length.toString();
+    document.getElementById('pb_cand_list').innerHTML += candNames.join(', ');
+    document.getElementById('pb_poll_list').innerHTML += pollNums.join(', ');
+    document.getElementById('pb_ss').innerHTML += sample_size;
+    document.getElementById("poll_table").style.display='none';
+    box.style.display='block';
+}
+
+// function create_processed_block(){
+
+// }
+
+function upload_file(){
+
+}
+
+function run(){
+
+}
+
+function download(){
+
 }

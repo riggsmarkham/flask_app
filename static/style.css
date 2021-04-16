@@ -45,18 +45,6 @@ button:disabled {
     justify-content: center;
 }
 
-p {
-    font-family: Sans-Serif;
-}
-
-a {
-    font-family: Sans-Serif;
-}
-
-table {
-    font-family: Sans-Serif;
-}
-
 input[type=text] {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -110,5 +98,17 @@ input[type=submit]:hover {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+    font-family: Sans-Serif;
+}
+
+.process_box {
+    display: none;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    justify-content: center;
+}
+
+h1, h2, h3, p, a, table {
     font-family: Sans-Serif;
 }
