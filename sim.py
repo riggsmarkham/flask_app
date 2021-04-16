@@ -216,6 +216,9 @@ def doAllSystems(name, filename, num, nested):
   runRCVElections(data, num)
   runTopTwoElections(data, num)
 
+def processData(filename):
+  return
+
 # doAllSystems('Quick Color Parties', 'data/simplecolors.txt', NUM, False)
 # doAllSystems('NYC Mayor', 'data/nycmayor.txt', NUM, False)
 # doAllSystems('Big Color Parties','data/rankedcolors.txt', NUM, False)

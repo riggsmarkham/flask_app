@@ -170,9 +170,9 @@ function process_input(){
     box.style.display='block';
 }
 
-// function create_processed_block(){
+function create_processed_block(){
 
-// }
+}
 
 function upload_file(){
 
