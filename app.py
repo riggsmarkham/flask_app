@@ -38,7 +38,7 @@ def upload_text():
             f.write(text)
     return render_template("election_sim.html")
 
-@app.route('election_sim/processed_file', methods = ['GET'])
+@app.route('election_sim/process_file', methods = ['GET'])
 def pull_data():
     pathString = glob.escape(os.path.join(app.instance_path, 'uploads', ''))
     fileUploaded = (len(glob.glob(pathString + '*')) != 0)
