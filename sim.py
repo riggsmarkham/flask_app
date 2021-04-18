@@ -1,7 +1,9 @@
+#imports
 import numpy as np
 from itertools import permutations
 import time
 
+#constants
 EPSILON = 10e-10
 NUM = 1000
 
@@ -216,6 +218,7 @@ def doAllSystems(name, filename, num, nested):
   runRCVElections(data, num)
   runTopTwoElections(data, num)
 
+#process a text file in order to send its data to the client
 def processData(filename):
   return
 

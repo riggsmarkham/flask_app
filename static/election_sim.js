@@ -1,3 +1,4 @@
+//setup
 var selection = [];
 total_button_list = document.getElementsByTagName('button');
 button_list = Array(0);
@@ -18,6 +19,7 @@ for(el of button_list){
     }
 }
 
+//processes click on one of the buttons in the selector part
 function reveal(el_list, clicked_el){
     if(!clicked_el.classList.contains('clicked')){
         clicked_el.classList.add('clicked');
@@ -50,6 +52,7 @@ function reveal(el_list, clicked_el){
     console.log(selection);
 }
 
+//processes a click on the button to go into the form
 function submit(el){
     el.classList.add('clicked');
     for(but of button_list){
@@ -64,6 +67,7 @@ function submit(el){
     }
 }
 
+//creates the table to input the candidate names
 function populate_cand_table(){
     var val = document.getElementById("cand_num").value;
     const newTable = document.createElement("table");
@@ -84,6 +88,7 @@ function populate_cand_table(){
     document.getElementById("cand_table").style.display='block';
 }
 
+//creates the page to input the polling data
 function populate_poll_table(){
     const childArray = Array.from(document.getElementById("cands").childNodes[0].childNodes);
     var candNames = Array(0);
@@ -108,6 +113,7 @@ function populate_poll_table(){
     document.getElementById("poll_table").style.display='block';
 }
 
+//creates the poll table itself
 function create_poll_table_element(array, col_1, col_2){
     const newTable = document.createElement("table");
     newTable.id="polls";
@@ -126,6 +132,7 @@ function create_poll_table_element(array, col_1, col_2){
     return newTable;
 }
 
+//process text input from the user and send it to the server
 function process_input(){
     const childNameArray = Array.from(document.getElementById("cands").childNodes[0].childNodes);
     var candNames = Array(0);
@@ -141,9 +148,6 @@ function process_input(){
     var sample_size = document.getElementById("ss_num").value;
     var candString = candNames.join();
     var pollString = pollNums.join();
-    console.log(candString);
-    console.log(pollString);
-    console.log(sample_size);
     var text = '1\n'+candString+'\n'+pollString+'\n'+sample_size+'\n';
     if(selection[2] != "pref"){
         text += '1';
@@ -169,18 +173,22 @@ function process_input(){
     document.getElementById("process_box").style.display='block';
 }
 
+//retrieve processed data from server and create block displaying
 function create_processed_block(){
 
 }
 
+//upload a file to the server
 function upload_file(){
 
 }
 
+//run the current file through the the simulator
 function run(){
 
 }
 
+//download the current file
 function download(){
 
 }

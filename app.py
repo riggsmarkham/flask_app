@@ -1,12 +1,15 @@
+#imports
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 import os
 import glob
 import sim
 
+#setup
 app = Flask(__name__)
 os.makedirs(os.path.join(app.instance_path, 'uploads'), exist_ok=True)
 
+#routes
 @app.route("/")
 def home():
     return render_template("homepage.html")
@@ -46,6 +49,7 @@ def pull_data():
         return sim.processData(glob.glob(pathString + '*')[0])
     return render_template("election_sim.html")
 
+#error handlers
 @app.errorhandler(404)
 def page_not_found(error):
    return render_template('errors/404.html'),404
@@ -58,5 +62,6 @@ def bad_request(error):
 def internal_server_error(error):
     return render_template('errors/500.html'),500
 
+#this thing
 if __name__ == "__main__" :
     app.run()
