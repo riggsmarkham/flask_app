@@ -112,3 +112,7 @@ input[type=submit]:hover {
 h1, h2, h3, p, a, table {
     font-family: Sans-Serif;
 }
+
+.topdiv {
+    display: none;
+}

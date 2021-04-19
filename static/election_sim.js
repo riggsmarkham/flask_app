@@ -18,6 +18,7 @@ for(el of button_list){
         el.style.display = 'none';
     }
 }
+document.getElementById('topdiv').style.display = 'block';
 
 //processes click on one of the buttons in the selector part
 function reveal(el_list, clicked_el){
