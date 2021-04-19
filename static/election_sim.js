@@ -158,29 +158,82 @@ function process_input(){
     formData.append('text', text);
     $.ajax({
         url: '/election_sim/text_submit',
-        type: 'POST',
+        method: 'POST',
         cache: false,
         data: formData,
         processData: false,
         contentType: false
     }).done(function(res) {
+        create_processed_block()
     }).fail(function(res) {});
-    document.getElementById('pb_cand_num').innerHTML += candNames.length.toString();
-    document.getElementById('pb_cand_list').innerHTML += candNames.join(', ');
-    document.getElementById('pb_poll_list').innerHTML += pollNums.join(', ');
-    document.getElementById('pb_ss').innerHTML += sample_size;
-    document.getElementById("poll_table").style.display='none';
-    document.getElementById("process_box").style.display='block';
-}
-
-//retrieve processed data from server and create block displaying
-function create_processed_block(){
-
 }
 
 //upload a file to the server
 function upload_file(){
+    var formData = new FormData();
+    formData.append("file", document.getElementById('fileupload').files[0]);
+    $.ajax({
+        url: '/election_sim/file_submit',
+        method: 'POST',
+        cache: false,
+        data: formData,
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+        create_processed_block();
+    }).fail(function(res) {});
+}
 
+//retrieve processed data from server and create block displaying
+function create_processed_block(){
+    $.ajax({
+        url: '/election_sim/process_file',
+        method: 'GET',
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+        const obj = JSON.parse(res);
+        var table;
+        if(selection[2] == "fptp"){
+            document.getElementById('pb_cand_list').innerHTML += obj.candString;
+            document.getElementById('pb_ss').innerHTML += obj.sample_size;
+            candArray = obj.candString.split(", ");
+            document.getElementById('pb_cand_num').innerHTML += candArray.length.toString();
+            numArray = obj.pollString.split(", ");
+            table = create_poll_table_processed(candArray, numArray, "Candidate Name", "Poll Result");
+        } else if (selection[2] == "pref"){
+            
+        } else if (selection[2] == "appr"){
+            
+        } else if (selection[2] == "pair"){
+            
+        }
+        const parent = document.getElementById("process_box");
+        const child = document.getElementById("pb_ss");
+        parent.insertBefore(table, child);
+        document.getElementById("poll_table").style.display='none';
+        document.getElementById("process_box").style.display='block';
+    }).fail(function(res) {});
+}
+
+//creates the processed poll table
+function create_poll_table_processed(array_1, array_2, col_1, col_2){
+    const newTable = document.createElement("table");
+    newTable.id="processed_polls";
+    var r = newTable.insertRow();
+    var c = r.insertCell();
+    c.innerHTML = col_1;
+    var c = r.insertCell();
+    c.innerHTML = col_2;
+    for (i = 0; i < array_1.length; i++){
+        var r = newTable.insertRow();
+        var c = r.insertCell();
+        c.innerHTML = array_1[i];
+        var c = r.insertCell();
+        c.innerHTML = array_2[i];
+    }
+    return newTable;
 }
 
 //run the current file through the the simulator

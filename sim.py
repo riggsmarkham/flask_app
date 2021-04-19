@@ -220,7 +220,21 @@ def doAllSystems(name, filename, num, nested):
 
 #process a text file in order to send its data to the client
 def processData(filename):
-  return
+  data = readFromFile(filename)
+  candString = ""
+  for el in data[0][0]:
+    candString += str(el) + ', '
+  candString = candString[:-2]
+  pollString = ""
+  for el in data[0][1]:
+    pollString += str(el) + ', '
+  pollString = pollString[:-2]
+  obj = {
+    "candString": candString,
+    "pollString": pollString,
+    "sample_size": str(data[0][2])
+  }
+  return obj
 
 # doAllSystems('Quick Color Parties', 'data/simplecolors.txt', NUM, False)
 # doAllSystems('NYC Mayor', 'data/nycmayor.txt', NUM, False)

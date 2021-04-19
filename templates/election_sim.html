@@ -26,7 +26,7 @@
                 <button id="3-no">Not Implemented Yet</button>
             </div>
             <div class="buttondiv">
-                <button id="4-file" onclick="reveal(['5-no'], this)">Input File</button>
+                <button id="4-file" onclick="reveal(['5-sub'], this)">Input File</button>
                 <button id="4-text" onclick="reveal(['5-sub'], this)">Input Text</button>
                 <button id="4-no">Not Implemented Yet</button>
             </div>
@@ -37,7 +37,8 @@
         </div>
         <div>
             <div class='formbox' id='file_form'>
-                <input type = "file" name = "file"></input>
+                <label for="fileupload">Upload File</label>
+                <input id="fileupload" type = "file" name = "file" accept=".txt"></input>
                 <button type="button" id = '0-file_form' onclick="upload_file()">Process File</button>
             </div>
             <div class='formbox' id='text_form'>
@@ -61,7 +62,7 @@
             <h3 id='pb_title'>Election Summary:</h3>
             <p id='pb_cand_num'>Number of Candidates: </p>
             <p id='pb_cand_list'>Candidate List: </p>
-            <p id='pb_poll_list'>Polling List: </p>
+            <p id='pb_poll_table'>Polling Table: </p>
             <p id='pb_ss'>Sample Size: </p>
             <div class='buttondiv'>
                 <button type="button" id="0-run" onclick="run()">Run</button>
