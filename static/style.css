@@ -51,14 +51,6 @@ input[type=text] {
     box-sizing: border-box;
 }
 
-.formbox {
-    display: none;
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    justify-content: center;
-}
-
 input[type=file] {
     background-color: #1e29b9;
     border: none;
@@ -101,7 +93,11 @@ input[type=submit]:hover {
     font-family: Sans-Serif;
 }
 
-.process_box {
+h1, h2, h3, p, a, table, label {
+    font-family: Sans-Serif;
+}
+
+.big_box {
     display: none;
     border-radius: 5px;
     background-color: #f2f2f2;
@@ -109,10 +105,10 @@ input[type=submit]:hover {
     justify-content: center;
 }
 
-h1, h2, h3, p, a, table {
-    font-family: Sans-Serif;
-}
-
-.topdiv {
-    display: none;
+.header_div {
+    display: block;
+    background-color: #d0d0d0;
+    padding: 3px;
+    justify-content: center;
+    text-align: center;
 }

@@ -18,7 +18,7 @@ for(el of button_list){
         el.style.display = 'none';
     }
 }
-document.getElementById('topdiv').style.display = 'block';
+document.getElementById('top_div').style.display = 'block';
 
 //processes click on one of the buttons in the selector part
 function reveal(el_list, clicked_el){
@@ -59,6 +59,7 @@ function submit(el){
     for(but of button_list){
         but.style.display = 'none';
     }
+    document.getElementById('top_div').style.display = 'none';
     if (selection[3] == "file"){
         document.getElementById('file_form').style.display = 'block';
     } else {
@@ -86,7 +87,7 @@ function populate_cand_table(){
     if(selection[2] != "pref"){
         child.style.display = 'none';
     }
-    document.getElementById("cand_table").style.display='block';
+    parent.style.display='block';
 }
 
 //creates the page to input the polling data
@@ -214,7 +215,8 @@ function create_processed_block(){
         const child = document.getElementById("pb_ss");
         parent.insertBefore(table, child);
         document.getElementById("poll_table").style.display='none';
-        document.getElementById("process_box").style.display='block';
+        document.getElementById("file_form").style.display='none';
+        parent.style.display='block';
     }).fail(function(res) {});
 }
 
@@ -239,10 +241,55 @@ function create_poll_table_processed(array_1, array_2, col_1, col_2){
 
 //run the current file through the the simulator
 function run(){
-
+    $.ajax({
+        url: '/election_sim/run_file',
+        method: 'GET',
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+        properString = res.replaceAll('\n','<br>');
+        document.getElementById("result_p").innerHTML = properString;
+        document.getElementById("process_box").style.display = 'none';
+        document.getElementById("result_box").style.display = 'block';
+    }).fail(function(res) {});
 }
 
 //download the current file
 function download(){
+    $.ajax({
+        url: '/election_sim/download_file',
+        method: 'GET',
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+    }).fail(function(res) {});
+}
 
+//delete file and restart the form
+function delete_file(){
+    $.ajax({
+        url: '/election_sim/delete_file',
+        method: 'DELETE',
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+        document.getElementById("0-run").disabled = true;
+        document.getElementById("0-download").disabled = true;
+        document.getElementById("0-del").disabled = true;
+    }).fail(function(res) {});
+}
+
+//download results file
+function download_results(){
+    $.ajax({
+        url: '/election_sim/download_file',
+        method: 'GET',
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+    }).fail(function(res) {});
 }

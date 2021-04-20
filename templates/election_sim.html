@@ -7,8 +7,11 @@
         <title>Election Simulator</title>
     </head>
     <body>
-        <p><a href="/">Go back to homepage</a></p>
-        <div id='topdiv' class='topdiv'>
+        <div class="header_div">
+            <p><a href="/">Go back to homepage</a></p>
+            <p><a href="/election_sim">Restart this page</a></p>
+        </div>
+        <div id='top_div' class='big_box'>
             <div class="buttondiv">
                 <button id="1-sim" onclick="reveal(['2-poll','2-ideo'], this)">Simulate Election</button>
                 <button id="1-eval" onclick="reveal(['2-no'], this)">Evaluate Election</button>
@@ -36,12 +39,12 @@
             </div>
         </div>
         <div>
-            <div class='formbox' id='file_form'>
+            <div id='file_form' class='big_box'>
                 <label for="fileupload">Upload File</label>
                 <input id="fileupload" type = "file" name = "file" accept=".txt"></input>
                 <button type="button" id = '0-file_form' onclick="upload_file()">Process File</button>
             </div>
-            <div class='formbox' id='text_form'>
+            <div id='text_form' class='big_box'>
                 <div id='cand_setup'>
                     <p>Number of Candidates: <input type="number" id='cand_num'/></p>
                     <button type="button" id="0-cand_num_form" onclick="populate_cand_table()">Next</button>
@@ -58,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <div id='process_box' class='process_box'>
+        <div id='process_box' class='big_box'>
             <h3 id='pb_title'>Election Summary:</h3>
             <p id='pb_cand_num'>Number of Candidates: </p>
             <p id='pb_cand_list'>Candidate List: </p>
@@ -67,7 +70,13 @@
             <div class='buttondiv'>
                 <button type="button" id="0-run" onclick="run()">Run</button>
                 <button type="button" id="0-download" onclick="download()">Download</button>
+                <button type="button" id="0-del" onclick="delete_file()">Delete</button>
             </div>
+        </div>
+        <div id='result_box' class='big_box'>
+            <h3>Simulation Results:</h3>
+            <p id='result_p'></p>
+            <button type="button" id="0-download-results" onclick="download_results()">Download Results</button>
         </div>
     </body>
     <script

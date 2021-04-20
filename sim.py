@@ -173,50 +173,53 @@ def readFromFileNested(filename):
 
 #print results of election simulation
 def printResults(names, results):
+  newString = ""
   nameLength = len(max(names, key=len))
   total = np.sum(results)
   for i in range(len(results)):
     s = "{:<" + str(nameLength) + "} {:>6.1%}"
-    print(s.format(names[i],int(results[i])/total))
-  print()
+    newString += s.format(names[i],int(results[i])/total) + '\n'
+  newString += '\n'
+  return newString
 
 #actually run fptp simulation given data from file
 def runFPTPElections(npData, num):
-  print("FPTP Elections\n")
+  newString = "FPTP Elections\n\n"
   t = time.process_time()
   for el in npData:
-    printResults(el[0], runFPTPIterations(el[1], el[0], num, el[2], el[3]))
-  print("Average time: " + str((time.process_time() - t)/len(npData)))
-  print()
+    newString += printResults(el[0], runFPTPIterations(el[1], el[0], num, el[2], el[3]))
+  newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  return newString
 
 #actually run rcv simulation given data from file
 def runRCVElections(npData, num):
-  print("RCV Elections\n")
+  newString = "RCV Elections\n\n"
   t = time.process_time()
   for el in npData:
-    printResults(el[0], runRCVIterations(el[1], el[0], num, el[2], el[3]))
-  print("Average time: " + str((time.process_time() - t)/len(npData)))
-  print()
+    newString += printResults(el[0], runRCVIterations(el[1], el[0], num, el[2], el[3]))
+  newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  return newString
 
 #actually runs a top two runoff simulation given data from file
 def runTopTwoElections(npData, num):
-  print("Top Two Elections\n")
+  newString = "Top Two Elections\n\n"
   t = time.process_time()
   for el in npData:
-    printResults(el[0], runTopTwoIterations(el[1], el[0], num, el[2], el[3]))
-  print("Average time: " + str((time.process_time() - t)/len(npData)))
-  print()
+    newString += printResults(el[0], runTopTwoIterations(el[1], el[0], num, el[2], el[3]))
+  newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  return newString
 
 #runs all the electoral systems for a particular file
 def doAllSystems(name, filename, num, nested):
-  print(name)
+  newString = name + '\n'
   if(not nested):
     data = readFromFile(filename)
   else:
     data = readFromFileNested(filename)
-  runFPTPElections(data, num)
-  runRCVElections(data, num)
-  runTopTwoElections(data, num)
+  newString += runFPTPElections(data, num)
+  newString += runRCVElections(data, num)
+  newString += runTopTwoElections(data, num)
+  return newString
 
 #process a text file in order to send its data to the client
 def processData(filename):

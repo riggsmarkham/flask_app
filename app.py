@@ -1,16 +1,28 @@
 #imports
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file, redirect, url_for
 from werkzeug.utils import secure_filename
-from os import path, makedirs, getenv
+from os import path, makedirs, getenv, remove
 from glob import escape, glob
 from json import dumps
-import sim
+from sim import processData, doAllSystems, NUM
 
 #setup
+UPLOAD_FOLDER = 'uploads'
+UPLOAD_FILENAME = 'userUpload.txt'
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 app.secret_key = getenv("SECRET_KEY")
-makedirs(path.join(app.instance_path, 'uploads'), exist_ok=True)
+makedirs(path.join(app.instance_path, UPLOAD_FOLDER), exist_ok=True)
+
+#helper functions
+def fileUploaded(ps):
+    return (len(glob(ps + '*')) != 0)
+
+def pathString():
+    return escape(path.join(app.instance_path, UPLOAD_FOLDER, ''))
+
+def uploadedFilename(ps):
+    return glob(ps + '*')[0];
 
 #routes
 @app.route("/")
@@ -23,31 +35,49 @@ def election_app():
 
 @app.route('/election_sim/file_submit', methods = ['POST'])
 def upload_file():
-    pathString = escape(path.join(app.instance_path, 'uploads', ''))
-    fileUploaded = (len(glob(pathString + '*')) != 0)
-    if not fileUploaded:
+    if not fileUploaded(pathString()):
         f = request.files['file']
         fname = secure_filename(f.filename)
         if '.txt' in fname:
-            f.save(path.join(app.instance_path, 'uploads', fname))
+            f.save(path.join(app.instance_path, UPLOAD_FOLDER, fname))
     return render_template("election_sim.html")
 
 @app.route('/election_sim/text_submit', methods = ['POST'])
 def upload_text():
-    pathString = escape(path.join(app.instance_path, 'uploads', ''))
-    fileUploaded = (len(glob(pathString + '*')) != 0)
-    if not fileUploaded:
+    if not fileUploaded(pathString()):
         text = request.form['text']
-        with open(path.join(app.instance_path, 'uploads', 'userUpload.txt'), 'w') as f:
+        with open(path.join(app.instance_path, UPLOAD_FOLDER, UPLOAD_FILENAME), 'w') as f:
             f.write(text)
     return render_template("election_sim.html")
 
 @app.route('/election_sim/process_file', methods = ['GET'])
-def pull_data():
-    pathString = escape(path.join(app.instance_path, 'uploads', ''))
-    fileUploaded = (len(glob(pathString + '*')) != 0)
-    if fileUploaded:
-        return dumps(sim.processData(glob(pathString + '*')[0]))
+def process_file():
+    ps = pathString()
+    if fileUploaded(ps):
+        return dumps(processData(uploadedFilename(ps)))
+    return render_template("election_sim.html")
+
+@app.route('/election_sim/run_file', methods = ['GET'])
+def run_file():
+    ps = pathString()
+    if fileUploaded(ps):
+        resultString = doAllSystems('Simulation', uploadedFilename(ps), NUM, False)
+        remove(uploadedFilename(ps))
+        return resultString
+    return render_template("election_sim.html")
+
+@app.route('/election_sim/download_file', methods = ['GET'])
+def download_file():
+    ps = pathString()
+    if fileUploaded(ps):
+        return send_file(uploadedFilename(ps), as_attachment=True)
+    return render_template("election_sim.html")
+
+@app.route('/election_sim/delete_file', methods = ['DELETE'])
+def delete_file():
+    ps = pathString()
+    if fileUploaded(ps):
+        remove(uploadedFilename(ps))
     return render_template("election_sim.html")
 
 #error handlers
