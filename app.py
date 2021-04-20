@@ -38,23 +38,20 @@ def upload_file():
     if not fileUploaded(pathString()):
         f = request.files['file']
         fname = secure_filename(f.filename)
+        wholeFilename = path.join(app.instance_path, UPLOAD_FOLDER, fname)
         if '.txt' in fname:
-            f.save(path.join(app.instance_path, UPLOAD_FOLDER, fname))
+            f.save(wholeFilename)
+            return dumps(processData(wholeFilename))
     return render_template("election_sim.html")
 
 @app.route('/election_sim/text_submit', methods = ['POST'])
 def upload_text():
     if not fileUploaded(pathString()):
         text = request.form['text']
-        with open(path.join(app.instance_path, UPLOAD_FOLDER, UPLOAD_FILENAME), 'w') as f:
+        wholeFilename = path.join(app.instance_path, UPLOAD_FOLDER, UPLOAD_FILENAME)
+        with open(wholeFilename, 'w') as f:
             f.write(text)
-    return render_template("election_sim.html")
-
-@app.route('/election_sim/process_file', methods = ['GET'])
-def process_file():
-    ps = pathString()
-    if fileUploaded(ps):
-        return dumps(processData(uploadedFilename(ps)))
+        return dumps(processData(wholeFilename))
     return render_template("election_sim.html")
 
 @app.route('/election_sim/run_file', methods = ['GET'])

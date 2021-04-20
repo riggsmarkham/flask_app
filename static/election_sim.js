@@ -19,6 +19,7 @@ for(el of button_list){
     }
 }
 document.getElementById('top_div').style.display = 'block';
+$.ajaxSetup({cache: false, processData: false, contentType: false});
 
 //processes click on one of the buttons in the selector part
 function reveal(el_list, clicked_el){
@@ -158,66 +159,44 @@ function process_input(){
     }
     var formData = new FormData();
     formData.append('text', text);
-    $.ajax({
-        url: '/election_sim/text_submit',
-        method: 'POST',
-        cache: false,
-        data: formData,
-        processData: false,
-        contentType: false
-    }).done(function(res) {
-        create_processed_block()
-    }).fail(function(res) {});
+    $.post('/election_sim/text_submit', formData, function(res){
+        create_processed_block(res);
+    });
 }
 
 //upload a file to the server
 function upload_file(){
     var formData = new FormData();
     formData.append("file", document.getElementById('fileupload').files[0]);
-    $.ajax({
-        url: '/election_sim/file_submit',
-        method: 'POST',
-        cache: false,
-        data: formData,
-        processData: false,
-        contentType: false
-    }).done(function(res) {
-        create_processed_block();
-    }).fail(function(res) {});
+    $.post('/election_sim/file_submit', formData, function(res){
+        create_processed_block(res);
+    });
 }
 
 //retrieve processed data from server and create block displaying
-function create_processed_block(){
-    $.ajax({
-        url: '/election_sim/process_file',
-        method: 'GET',
-        cache: false,
-        processData: false,
-        contentType: false
-    }).done(function(res) {
-        const obj = JSON.parse(res);
-        var table;
-        if(selection[2] == "fptp"){
-            document.getElementById('pb_cand_list').innerHTML += obj.candString;
-            document.getElementById('pb_ss').innerHTML += obj.sample_size;
-            candArray = obj.candString.split(", ");
-            document.getElementById('pb_cand_num').innerHTML += candArray.length.toString();
-            numArray = obj.pollString.split(", ");
-            table = create_poll_table_processed(candArray, numArray, "Candidate Name", "Poll Result");
-        } else if (selection[2] == "pref"){
-            
-        } else if (selection[2] == "appr"){
-            
-        } else if (selection[2] == "pair"){
-            
-        }
-        const parent = document.getElementById("process_box");
-        const child = document.getElementById("pb_ss");
-        parent.insertBefore(table, child);
-        document.getElementById("poll_table").style.display='none';
-        document.getElementById("file_form").style.display='none';
-        parent.style.display='block';
-    }).fail(function(res) {});
+function create_processed_block(res){
+    const obj = JSON.parse(res);
+    var table;
+    if(selection[2] == "fptp"){
+        document.getElementById('pb_cand_list').innerHTML += obj.candString;
+        document.getElementById('pb_ss').innerHTML += obj.sample_size;
+        candArray = obj.candString.split(", ");
+        document.getElementById('pb_cand_num').innerHTML += candArray.length.toString();
+        numArray = obj.pollString.split(", ");
+        table = create_poll_table_processed(candArray, numArray, "Candidate Name", "Poll Result");
+    } else if (selection[2] == "pref"){
+        
+    } else if (selection[2] == "appr"){
+        
+    } else if (selection[2] == "pair"){
+        
+    }
+    const parent = document.getElementById("process_box");
+    const child = document.getElementById("pb_ss");
+    parent.insertBefore(table, child);
+    document.getElementById("poll_table").style.display='none';
+    document.getElementById("file_form").style.display='none';
+    parent.style.display='block';
 }
 
 //creates the processed poll table
@@ -241,30 +220,18 @@ function create_poll_table_processed(array_1, array_2, col_1, col_2){
 
 //run the current file through the the simulator
 function run(){
-    $.ajax({
-        url: '/election_sim/run_file',
-        method: 'GET',
-        cache: false,
-        processData: false,
-        contentType: false
-    }).done(function(res) {
+    $.get('/election_sim/run_file', function(res) {
+        console.log(res)
         properString = res.replaceAll('\n','<br>');
         document.getElementById("result_p").innerHTML = properString;
         document.getElementById("process_box").style.display = 'none';
         document.getElementById("result_box").style.display = 'block';
-    }).fail(function(res) {});
+    });
 }
 
 //download the current file
 function download(){
-    $.ajax({
-        url: '/election_sim/download_file',
-        method: 'GET',
-        cache: false,
-        processData: false,
-        contentType: false
-    }).done(function(res) {
-    }).fail(function(res) {});
+    $.get('/election_sim/download_file');
 }
 
 //delete file and restart the form
@@ -272,24 +239,15 @@ function delete_file(){
     $.ajax({
         url: '/election_sim/delete_file',
         method: 'DELETE',
-        cache: false,
-        processData: false,
-        contentType: false
-    }).done(function(res) {
-        document.getElementById("0-run").disabled = true;
-        document.getElementById("0-download").disabled = true;
-        document.getElementById("0-del").disabled = true;
-    }).fail(function(res) {});
+        success: function() {
+            document.getElementById("0-run").disabled = true;
+            document.getElementById("0-download").disabled = true;
+            document.getElementById("0-del").disabled = true;
+        }
+    });
 }
 
 //download results file
 function download_results(){
-    $.ajax({
-        url: '/election_sim/download_file',
-        method: 'GET',
-        cache: false,
-        processData: false,
-        contentType: false
-    }).done(function(res) {
-    }).fail(function(res) {});
+    //$.get('/election_sim/download_file');
 }
