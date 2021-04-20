@@ -1,8 +1,8 @@
 //setup
 var selection = [];
-total_button_list = document.getElementsByTagName('button');
-button_list = Array(0);
-bot_button_list = Array(0);
+const total_button_list = document.getElementsByTagName('button');
+var button_list = Array(0);
+var bot_button_list = Array(0);
 for(el of total_button_list){
     if(el.id.slice(0,1) != "0"){
         button_list.push(el);
@@ -36,7 +36,7 @@ function reveal(el_list, clicked_el){
         }
     } else {
         clicked_el.classList.remove('clicked')
-        num = parseInt(clicked_el.id.slice(0,1));
+        const num = parseInt(clicked_el.id.slice(0,1));
         selection = selection.slice(0,num - 1);
         for(el of button_list){
             if(el.id.slice(0,1) == clicked_el.id.slice(0,1)){
@@ -72,13 +72,13 @@ function submit(el){
 
 //creates the table to input the candidate names
 function populate_cand_table(){
-    var val = document.getElementById("cand_num").value;
+    const num = parseInt(document.getElementById("cand_num").value);
     const newTable = document.createElement("table");
     newTable.id="cands";
-    num = parseInt(val);
+    var r, c;
     for (i = 0; i < num; i++){
-        var r = newTable.insertRow();
-        var c = r.insertCell();
+        r = newTable.insertRow();
+        c = r.insertCell();
         c.innerHTML = "<input type = 'text'></input>";
     }
     const parent = document.getElementById("cand_table");
@@ -123,13 +123,13 @@ function create_poll_table_element(array, col_1, col_2){
     var r = newTable.insertRow();
     var c = r.insertCell();
     c.innerHTML = col_1;
-    var c = r.insertCell();
+    c = r.insertCell();
     c.innerHTML = col_2;
     for (i = 0; i < array.length; i++){
-        var r = newTable.insertRow();
-        var c = r.insertCell();
+        r = newTable.insertRow();
+        c = r.insertCell();
         c.innerHTML = array[i];
-        var c = r.insertCell();
+        c = r.insertCell();
         c.innerHTML = "<input type = 'number'></input>";
     }
     return newTable;
@@ -180,9 +180,9 @@ function create_processed_block(res){
     if(selection[2] == "fptp"){
         document.getElementById('pb_cand_list').innerHTML += obj.candString;
         document.getElementById('pb_ss').innerHTML += obj.sample_size;
-        candArray = obj.candString.split(", ");
+        const candArray = obj.candString.split(", ");
         document.getElementById('pb_cand_num').innerHTML += candArray.length.toString();
-        numArray = obj.pollString.split(", ");
+        const numArray = obj.pollString.split(", ");
         table = create_poll_table_processed(candArray, numArray, "Candidate Name", "Poll Result");
     } else if (selection[2] == "pref"){
         
@@ -206,13 +206,13 @@ function create_poll_table_processed(array_1, array_2, col_1, col_2){
     var r = newTable.insertRow();
     var c = r.insertCell();
     c.innerHTML = col_1;
-    var c = r.insertCell();
+    c = r.insertCell();
     c.innerHTML = col_2;
     for (i = 0; i < array_1.length; i++){
-        var r = newTable.insertRow();
-        var c = r.insertCell();
+        r = newTable.insertRow();
+        c = r.insertCell();
         c.innerHTML = array_1[i];
-        var c = r.insertCell();
+        c = r.insertCell();
         c.innerHTML = array_2[i];
     }
     return newTable;
