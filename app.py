@@ -67,8 +67,7 @@ def run_file():
 def download_file():
     ps = pathString()
     if fileUploaded(ps):
-        return send_file(uploadedFilename(ps), as_attachment=True)
-    return render_template("election_sim.html")
+        return send_file(uploadedFilename(ps), as_attachment=True, cache_timeout=0)
 
 @app.route('/election_sim/delete_file', methods = ['DELETE'])
 def delete_file():

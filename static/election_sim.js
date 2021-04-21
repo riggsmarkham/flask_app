@@ -231,7 +231,9 @@ function run(){
 
 //download the current file
 function download(){
-    $.get('/election_sim/download_file');
+    $.get('/election_sim/download_file', function(res) {
+        console.log(res);
+    });
 }
 
 //delete file and restart the form
