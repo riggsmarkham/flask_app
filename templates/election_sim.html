@@ -68,17 +68,19 @@
             <p id='pb_poll_table'>Polling Table: </p>
             <p id='pb_ss'>Sample Size: </p>
             <div class='buttondiv'>
-                <button type="button" id="0-run" onclick="run()">Run</button>
-                <a href='/election_sim/download_file' target='_blank'>
-                    <button type="button" id="0-download">Download</button>
+                <button type="button" id="0-run-file" onclick="run()">Run</button>
+                <a id="0-download-file-link" download>
+                    <button type="button" id="0-download-file">Download</button>
                 </a>
-                <button type="button" id="0-del" onclick="delete_file()">Delete</button>
+                <button type="button" id="0-delete-file" onclick="delete_file()">Delete</button>
             </div>
         </div>
         <div id='result_box' class='big_box'>
             <h3>Simulation Results:</h3>
             <p id='result_p'></p>
-            <button type="button" id="0-download-results" onclick="download_results()">Download Results</button>
+            <a id="0-download-results-link" download>
+                <button type="button" id="0-download-results">Download Results</button>
+            </a>
         </div>
     </body>
     <script

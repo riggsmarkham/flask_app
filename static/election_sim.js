@@ -1,5 +1,12 @@
 //setup
+const UPLOAD_RESULT = 'results';
+const UPLOAD_FILEEXT = '.txt';
+
 var selection = [];
+var filename_root = "";
+
+$.ajaxSetup({cache: false, processData: false, contentType: false});
+
 const total_button_list = document.getElementsByTagName('button');
 var button_list = Array(0);
 var bot_button_list = Array(0);
@@ -10,7 +17,6 @@ for(el of total_button_list){
         bot_button_list.push(el);
     }
 }
-
 for(el of button_list){
     if(el.id.slice(0,1) == "1"){
         el.style.display = 'inline';
@@ -18,8 +24,8 @@ for(el of button_list){
         el.style.display = 'none';
     }
 }
+
 document.getElementById('top_div').style.display = 'block';
-$.ajaxSetup({cache: false, processData: false, contentType: false});
 
 //processes click on one of the buttons in the selector part
 function reveal(el_list, clicked_el){
@@ -176,6 +182,7 @@ function upload_file(){
 //retrieve processed data from server and create block displaying
 function create_processed_block(res){
     const obj = JSON.parse(res);
+    filename_root = obj.filename_root
     var table;
     if(selection[2] == "fptp"){
         document.getElementById('pb_cand_list').innerHTML += obj.candString;
@@ -196,6 +203,7 @@ function create_processed_block(res){
     parent.insertBefore(table, child);
     document.getElementById("poll_table").style.display='none';
     document.getElementById("file_form").style.display='none';
+    document.getElementById("0-download-file-link").href = '/election_sim/download_file/' + filename_root + UPLOAD_FILEEXT;
     parent.style.display='block';
 }
 
@@ -220,36 +228,25 @@ function create_poll_table_processed(array_1, array_2, col_1, col_2){
 
 //run the current file through the the simulator
 function run(){
-    $.get('/election_sim/run_file', function(res) {
-        console.log(res)
+    $.get('/election_sim/run_file/' + filename_root + UPLOAD_FILEEXT, function(res) {
+        console.log(res);
         properString = res.replaceAll('\n','<br>');
         document.getElementById("result_p").innerHTML = properString;
         document.getElementById("process_box").style.display = 'none';
+        document.getElementById("0-download-results-link").href = '/election_sim/download_file/' + filename_root + UPLOAD_RESULT + UPLOAD_FILEEXT;
         document.getElementById("result_box").style.display = 'block';
-    });
-}
-
-//download the current file
-function download(){
-    $.get('/election_sim/download_file', function(res) {
-        console.log(res);
     });
 }
 
 //delete file and restart the form
 function delete_file(){
     $.ajax({
-        url: '/election_sim/delete_file',
+        url: '/election_sim/delete_file/' + filename_root + UPLOAD_FILEEXT,
         method: 'DELETE',
         success: function() {
-            document.getElementById("0-run").disabled = true;
-            document.getElementById("0-download").disabled = true;
-            document.getElementById("0-del").disabled = true;
+            document.getElementById("0-run-file").disabled = true;
+            document.getElementById("0-download-file").disabled = true;
+            document.getElementById("0-delete-file").disabled = true;
         }
     });
-}
-
-//download results file
-function download_results(){
-    //$.get('/election_sim/download_file');
 }

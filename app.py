@@ -1,5 +1,5 @@
 #imports
-from flask import Flask, render_template, request, send_file, redirect, url_for
+from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
 from os import path, makedirs, getenv, remove
 from glob import escape, glob
@@ -8,21 +8,21 @@ from sim import processData, doAllSystems, NUM
 
 #setup
 UPLOAD_FOLDER = 'uploads'
-UPLOAD_FILENAME = 'userUpload.txt'
+UPLOAD_FILEROOT = 'userUpload'
+UPLOAD_FILEEXT = '.txt'
+UPLOAD_RESULT = 'results'
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 1024
 app.secret_key = getenv("SECRET_KEY")
 makedirs(path.join(app.instance_path, UPLOAD_FOLDER), exist_ok=True)
 
 #helper functions
-def fileUploaded(ps):
-    return (len(glob(ps + '*')) != 0)
-
 def pathString():
     return escape(path.join(app.instance_path, UPLOAD_FOLDER, ''))
 
-def uploadedFilename(ps):
-    return glob(ps + '*')[0];
+def newUploadFilename():
+    ps = pathString()
+    return escape(path.join(ps + UPLOAD_FILEROOT + str(len(glob(ps + '*'))) + UPLOAD_FILEEXT))
 
 #routes
 @app.route("/")
@@ -35,45 +35,45 @@ def election_app():
 
 @app.route('/election_sim/file_submit', methods = ['POST'])
 def upload_file():
-    if not fileUploaded(pathString()):
-        f = request.files['file']
-        fname = secure_filename(f.filename)
-        wholeFilename = path.join(app.instance_path, UPLOAD_FOLDER, fname)
-        if '.txt' in fname:
-            f.save(wholeFilename)
-            return dumps(processData(wholeFilename))
+    f = request.files['file']
+    fname = secure_filename(f.filename)
+    if fname.endswith(UPLOAD_FILEEXT):
+        wholeFilename = escape(path.join(app.instance_path, UPLOAD_FOLDER, fname))
+        f.save(wholeFilename)
+        return dumps(processData(wholeFilename, fname[:-(len(UPLOAD_FILEEXT))]))
     return render_template("election_sim.html")
 
 @app.route('/election_sim/text_submit', methods = ['POST'])
 def upload_text():
-    if not fileUploaded(pathString()):
-        text = request.form['text']
-        wholeFilename = path.join(app.instance_path, UPLOAD_FOLDER, UPLOAD_FILENAME)
-        with open(wholeFilename, 'w') as f:
-            f.write(text)
-        return dumps(processData(wholeFilename))
-    return render_template("election_sim.html")
+    text = request.form['text']
+    wholeFilename = newUploadFilename()
+    with open(wholeFilename, 'w') as f:
+        f.write(text)
+    return dumps(processData(wholeFilename, UPLOAD_FILEROOT))
 
-@app.route('/election_sim/run_file', methods = ['GET'])
-def run_file():
-    ps = pathString()
-    if fileUploaded(ps):
-        resultString = doAllSystems('Simulation', uploadedFilename(ps), NUM, False)
-        remove(uploadedFilename(ps))
+@app.route('/election_sim/run_file/<filename>', methods = ['GET'])
+def run_file(filename):
+    filepath = pathString() + filename
+    print(filepath)
+    if path.isfile(filepath):
+        resultString = doAllSystems('Simulation',  filepath, NUM, False)
+        with open(pathString() + filename[:-(len(UPLOAD_FILEEXT))] + UPLOAD_RESULT + UPLOAD_FILEEXT, 'w') as f:
+            f.write(resultString)
+        #remove(filepath)
         return resultString
     return render_template("election_sim.html")
 
-@app.route('/election_sim/download_file', methods = ['GET'])
-def download_file():
-    ps = pathString()
-    if fileUploaded(ps):
-        return send_file(uploadedFilename(ps), as_attachment=True, cache_timeout=0)
+@app.route('/election_sim/download_file/<filename>', methods = ['GET'])
+def download_file(filename):
+    filepath = pathString() + filename
+    if path.isfile(filepath):
+        return send_file(filepath, as_attachment=True, cache_timeout=0)
 
-@app.route('/election_sim/delete_file', methods = ['DELETE'])
-def delete_file():
-    ps = pathString()
-    if fileUploaded(ps):
-        remove(uploadedFilename(ps))
+@app.route('/election_sim/delete_file/<filename>', methods = ['DELETE'])
+def delete_file(filename):
+    filepath = pathString() + filename
+    if path.isfile(filepath):
+        remove(filepath)
     return render_template("election_sim.html")
 
 #error handlers

@@ -222,8 +222,8 @@ def doAllSystems(name, filename, num, nested):
   return newString
 
 #process a text file in order to send its data to the client
-def processData(filename):
-  data = readFromFile(filename)
+def processData(filepath, fileroot):
+  data = readFromFile(filepath)
   candString = ""
   for el in data[0][0]:
     candString += str(el) + ', '
@@ -235,7 +235,8 @@ def processData(filename):
   obj = {
     "candString": candString,
     "pollString": pollString,
-    "sample_size": str(data[0][2])
+    "sample_size": str(data[0][2]),
+    "filename_root": fileroot
   }
   return obj
 
