@@ -5,7 +5,7 @@ const UPLOAD_FILEEXT = '.txt';
 var selection = [];
 var filename_root = "";
 
-$.ajaxSetup({cache: false, processData: false, contentType: false});
+$.ajaxSetup({processData: false, contentType: false});
 
 const total_button_list = document.getElementsByTagName('button');
 var button_list = Array(0);
