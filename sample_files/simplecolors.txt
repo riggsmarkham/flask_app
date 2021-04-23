@@ -1,0 +1,5 @@
+1
+green,blue,red,yellow,purple,black
+11,12,14,9,20,15
+1000
+1

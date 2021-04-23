@@ -1,0 +1,5 @@
+1
+Bolsonaro,Lula,Gomes,Doria,Amoedo,Moro,Huck
+31,34,6,4,5,3,6
+3500
+1

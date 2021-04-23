@@ -1,6 +1,7 @@
 //setup
 const UPLOAD_RESULT = 'results';
 const UPLOAD_FILEEXT = '.txt';
+const IMGFILEFORMAT = '.png'
 
 var selection = [];
 var filename_root = "";
@@ -228,9 +229,10 @@ function create_poll_table_processed(array_1, array_2, col_1, col_2){
 
 //run the current file through the the simulator
 function run(){
-    $.get('/election_sim/run_file/' + filename_root + UPLOAD_FILEEXT, function(res) {
-        console.log(res);
-        properString = res.replaceAll('\n','<br>');
+    $.getJSON('/election_sim/run_file/' + filename_root + UPLOAD_FILEEXT, function(res) {
+        console.log(res.textResult);
+        properString = res.textResult.replaceAll('\n','<br>');
+        create_image_block(res.imgFolderName, parseInt(res.numFiles));
         document.getElementById("result_p").innerHTML = properString;
         document.getElementById("process_box").style.display = 'none';
         document.getElementById("0-download-results-link").href = '/election_sim/download_file/' + filename_root + UPLOAD_RESULT + UPLOAD_FILEEXT;
@@ -249,4 +251,17 @@ function delete_file(){
             document.getElementById("0-delete-file").disabled = true;
         }
     });
+}
+
+//create place for image files to go
+function create_image_block(imgfoldername, num){
+    for (i = 0; i < num; i++){
+        var img;
+        num_str = i.toString();
+        img = document.createElement('img');
+        img.src = '/static/election_sim/' + imgfoldername + '/' + num_str + IMGFILEFORMAT;
+        img.alt = 'Simulation ' + num_str;
+        img.id = 'img' + num_str;
+        document.getElementById('result_box').appendChild(img);
+    }
 }

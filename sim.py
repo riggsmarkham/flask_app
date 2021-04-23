@@ -2,10 +2,15 @@
 import numpy as np
 from itertools import permutations
 import time
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from glob import glob
 
 #constants
 EPSILON = 10e-10
 NUM = 1000
+IMGFILEFORMAT = '.png'
 
 #normalize polling to decimals between 0 (none) and 1 (all)
 def normalizePolling(polling):
@@ -183,42 +188,48 @@ def printResults(names, results):
   return newString
 
 #actually run fptp simulation given data from file
-def runFPTPElections(npData, num):
+def runFPTPElections(npData, num, imgfilepath):
   newString = "FPTP Elections\n\n"
   t = time.process_time()
   for el in npData:
-    newString += printResults(el[0], runFPTPIterations(el[1], el[0], num, el[2], el[3]))
+    winList = runFPTPIterations(el[1], el[0], num, el[2], el[3])
+    newString += printResults(el[0], winList)
+    plotResults(el[0], winList, imgfilepath)
   newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
   return newString
 
 #actually run rcv simulation given data from file
-def runRCVElections(npData, num):
+def runRCVElections(npData, num, imgfilepath):
   newString = "RCV Elections\n\n"
   t = time.process_time()
   for el in npData:
-    newString += printResults(el[0], runRCVIterations(el[1], el[0], num, el[2], el[3]))
+    winList = runRCVIterations(el[1], el[0], num, el[2], el[3])
+    newString += printResults(el[0], winList)
+    plotResults(el[0], winList, imgfilepath)
   newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
   return newString
 
 #actually runs a top two runoff simulation given data from file
-def runTopTwoElections(npData, num):
+def runTopTwoElections(npData, num, imgfilepath):
   newString = "Top Two Elections\n\n"
   t = time.process_time()
   for el in npData:
-    newString += printResults(el[0], runTopTwoIterations(el[1], el[0], num, el[2], el[3]))
+    winList = runTopTwoIterations(el[1], el[0], num, el[2], el[3])
+    newString += printResults(el[0], winList)
+    plotResults(el[0], winList, imgfilepath)
   newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
   return newString
 
 #runs all the electoral systems for a particular file
-def doAllSystems(name, filename, num, nested):
+def doAllSystems(name, filepath, imgfilepath, num, nested):
   newString = name + '\n'
   if(not nested):
-    data = readFromFile(filename)
+    data = readFromFile(filepath)
   else:
-    data = readFromFileNested(filename)
-  newString += runFPTPElections(data, num)
-  newString += runRCVElections(data, num)
-  newString += runTopTwoElections(data, num)
+    data = readFromFileNested(filepath)
+  newString += runFPTPElections(data, num, imgfilepath)
+  newString += runRCVElections(data, num, imgfilepath)
+  newString += runTopTwoElections(data, num, imgfilepath)
   return newString
 
 #process a text file in order to send its data to the client
@@ -239,6 +250,13 @@ def processData(filepath, fileroot):
     "filename_root": fileroot
   }
   return obj
+
+#plot results
+def plotResults(partyList, resultList, imgfilepath):
+  plt.pie(resultList, labels=partyList, autopct='%1.1f%%')
+  plt.axis('equal')
+  numstr = str(len(glob(imgfilepath+ '*')))
+  plt.savefig(imgfilepath + numstr + IMGFILEFORMAT)
 
 # doAllSystems('Quick Color Parties', 'data/simplecolors.txt', NUM, False)
 # doAllSystems('NYC Mayor', 'data/nycmayor.txt', NUM, False)

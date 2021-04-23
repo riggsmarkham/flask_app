@@ -1,0 +1,17 @@
+4
+adams,donovan,garcia,mcguire,morales,stringer,wiley,yang,iscol
+17,8,2,2,2,13,8,28,1
+842
+1
+adams,mcguire,morales,stringer,wiley,yang,quinn
+16,4,5,5,7,17,6
+755
+1
+adams,donovan,garcia,mcguire,menchaca,morales,stringer,sutton,wiley,yang,quinn,rose,iscol
+14,2,3,2,2,2,11,1,7,20,7,6,1
+1000
+1
+adams,morales,stringer,sutton,johnson,diaz jr,liu,quinn,brewer,mark-viverto,taylor,foldenauer
+9,2,5,0,10,8,7,6,2,2,2,1
+366
+1
