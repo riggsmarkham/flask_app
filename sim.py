@@ -145,8 +145,10 @@ def readFromFile(filename):
         if(np.any(np.less(polls,0))):
           raise ValueError("negative input poll")
         num = int(lines[4*i+3])
-        depth = int(lines[4*i+4])
-        data.append([np.array(names), np.array(polls), num, depth])
+        polltype = lines[4*i+4]
+        if(polltype[-1] == '\n'):
+          polltype = polltype[:-1]
+        data.append([np.array(names), np.array(polls), num, polltype])
   return data
 
 #read a file with 2nd choice picks
@@ -172,8 +174,10 @@ def readFromFileNested(filename):
           polls[len(normalized)*j:len(normalized)*(j+1)] = normalized * firstPolls[j]
         lineNum += 3 + len(firstPolls)
         num = int(lines[lineNum - 1])
-        depth = int(lines[lineNum])
-        data.append([np.array(names), polls, num, depth])
+        polltype = lines[lineNum]
+        if(polltype[-1] == '\n'):
+          polltype = polltype[:-1]
+        data.append([np.array(names), polls, num, polltype])
   return data
 
 #print results of election simulation
@@ -189,35 +193,85 @@ def printResults(names, results):
 
 #actually run fptp simulation given data from file
 def runFPTPElections(npData, num, imgfilepath):
+  isPrinting = False
   newString = "FPTP Elections\n\n"
   t = time.process_time()
   for el in npData:
-    winList = runFPTPIterations(el[1], el[0], num, el[2], el[3])
-    newString += printResults(el[0], winList)
-    plotResults(el[0], winList, imgfilepath)
-  newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+    if(str(el[3]).isnumeric()):
+      winList = runFPTPIterations(el[1], el[0], num, el[2], int(el[3]))
+      newString += printResults(el[0], winList)
+      plotResults(el[0], winList, imgfilepath)
+      isPrinting = True
+  if(isPrinting):
+    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  else:
+    newString = ""
   return newString
 
 #actually run rcv simulation given data from file
 def runRCVElections(npData, num, imgfilepath):
+  isPrinting = False
   newString = "RCV Elections\n\n"
   t = time.process_time()
   for el in npData:
-    winList = runRCVIterations(el[1], el[0], num, el[2], el[3])
-    newString += printResults(el[0], winList)
-    plotResults(el[0], winList, imgfilepath)
-  newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+    if(str(el[3]).isnumeric() and (int(el[3]) > 1)):
+      winList = runRCVIterations(el[1], el[0], num, el[2], int(el[3]))
+      newString += printResults(el[0], winList)
+      plotResults(el[0], winList, imgfilepath)
+      isPrinting = True
+  if(isPrinting):
+    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  else:
+    newString = ""
   return newString
 
 #actually runs a top two runoff simulation given data from file
 def runTopTwoElections(npData, num, imgfilepath):
+  isPrinting = False
   newString = "Top Two Elections\n\n"
   t = time.process_time()
   for el in npData:
-    winList = runTopTwoIterations(el[1], el[0], num, el[2], el[3])
-    newString += printResults(el[0], winList)
-    plotResults(el[0], winList, imgfilepath)
-  newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+    if(str(el[3]).isnumeric() and (int(el[3]) > 1)):
+      winList = runTopTwoIterations(el[1], el[0], num, el[2], int(el[3]))
+      newString += printResults(el[0], winList)
+      plotResults(el[0], winList, imgfilepath)
+      isPrinting = True
+  if(isPrinting):
+    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  else:
+    newString = ""
+  return newString
+
+def runTopTwoElections(npData, num, imgfilepath):
+  isPrinting = False
+  newString = "Top Two Elections\n\n"
+  t = time.process_time()
+  for el in npData:
+    if(str(el[3]).isnumeric() and (int(el[3]) > 1)):
+      winList = runTopTwoIterations(el[1], el[0], num, el[2], int(el[3]))
+      newString += printResults(el[0], winList)
+      plotResults(el[0], winList, imgfilepath)
+      isPrinting = True
+  if(isPrinting):
+    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  else:
+    newString = ""
+  return newString
+
+def runApprovalElections(npData, num, imgfilepath):
+  isPrinting = False
+  newString = "Approval Elections\n\n"
+  t = time.process_time()
+  for el in npData:
+    if((str(el[3]).isnumeric() and (int(el[3]) > 1)) or el[3]:
+      winList = runTopTwoIterations(el[1], el[0], num, el[2], int(el[3]))
+      newString += printResults(el[0], winList)
+      plotResults(el[0], winList, imgfilepath)
+      isPrinting = True
+  if(isPrinting):
+    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  else:
+    newString = ""
   return newString
 
 #runs all the electoral systems for a particular file
