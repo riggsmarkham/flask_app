@@ -13,18 +13,18 @@
         </div>
         <div id='top_div' class='big_box'>
             <div class="buttondiv">
-                <button id="1-sim" onclick="reveal(['2-poll','2-ideo'], this)">Simulate Election</button>
-                <button id="1-eval" onclick="reveal(['2-no'], this)">Evaluate Election</button>
+                <button id="1-sim" onclick="reveal(['2-poll'], this)">Simulate Election</button>
+                <!--<button id="1-eval" onclick="reveal(['2-no'], this)">Evaluate Election</button>-->
             </div>
             <div class="buttondiv">
                 <button id="2-poll" onclick="reveal(['3-fptp','3-pref','3-appr','3-pair'], this)">Polling Data</button>
-                <button id="2-ideo" onclick="reveal(['3-no'], this)">Ideological Model</button>
+                <!--<button id="2-ideo" onclick="reveal(['3-no'], this)">Ideological Model</button>-->
                 <button id="2-no">Not Implemented Yet</button>
             </div>
             <div class="buttondiv">
                 <button id="3-fptp" onclick="reveal(['4-file','4-text'], this)">FPTP Polls</button>
-                <button id="3-pref" onclick="reveal(['4-no'], this)">Preference Lists</button>
-                <button id="3-appr" onclick="reveal(['4-no'], this)">Approval Polls</button>
+                <button id="3-pref" onclick="reveal(['4-file'], this)">Preference Lists</button>
+                <button id="3-appr" onclick="reveal(['4-file','4-text'], this)">Approval Polls</button>
                 <button id="3-pair" onclick="reveal(['4-no'], this)">Ranked Pairs</button>
                 <button id="3-no">Not Implemented Yet</button>
             </div>

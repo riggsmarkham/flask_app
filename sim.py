@@ -6,11 +6,13 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from glob import glob
+import math
 
 #constants
 EPSILON = 10e-10
 NUM = 1000
 IMGFILEFORMAT = '.png'
+APPROVALPROPORTION = 0.5
 
 #normalize polling to decimals between 0 (none) and 1 (all)
 def normalizePolling(polling):
@@ -102,6 +104,25 @@ def runTopTwo(partyList, results, depth):
       partySums[np.where(partyList == prefList[i][0])] -= results[i]
   return np.argmax(partySums)
 
+def runApproval(partyList, results, depth):
+  if(depth == 0):
+    depth = 1
+  prefList = constructPrefList(partyList, depth)
+  partySums = np.zeros(len(partyList))
+  if(depth == 1):
+    for i in range(len(results)):
+      index = np.where(partyList == prefList[i][0])
+      partySums[index] += results[i]
+  else:
+    for i in range(math.ceil(depth * APPROVALPROPORTION)):
+      for j in range(len(results)):
+        index = np.where(partyList == prefList[j][i])
+        partySums[index] += results[j]
+  return np.argmax(partySums)
+
+def runPairwise(partyList, results, depth):
+  return -1
+
 #run num iterations of a fptp election
 def runFPTPIterations(polling, partyList, num, sample, depth):
   normalized = normalizePolling(polling)
@@ -129,6 +150,24 @@ def runTopTwoIterations(polling, partyList, num, sample, depth):
   for _ in range(num):
     results = randomizedIteration(normalized, sample)
     winner = runTopTwo(partyList, results, depth)
+    winList[winner] += 1
+  return winList
+
+def runApprovalIterations(polling, partyList, num, sample, depth):
+  normalized = normalizePolling(polling)
+  winList = np.zeros(len(partyList))
+  for _ in range(num):
+    results = randomizedIteration(normalized, sample)
+    winner = runApproval(partyList, results, depth)
+    winList[winner] += 1
+  return winList
+
+def runPairwiseIterations(polling, partyList, num, sample, depth):
+  normalized = normalizePolling(polling)
+  winList = np.zeros(len(partyList))
+  for _ in range(num):
+    results = randomizedIteration(normalized, sample)
+    winner = runPairwise(partyList, results, depth)
     winList[winner] += 1
   return winList
 
@@ -198,6 +237,7 @@ def runFPTPElections(npData, num, imgfilepath):
   t = time.process_time()
   for el in npData:
     if(str(el[3]).isnumeric()):
+      print("fptp")
       winList = runFPTPIterations(el[1], el[0], num, el[2], int(el[3]))
       newString += printResults(el[0], winList)
       plotResults(el[0], winList, imgfilepath)
@@ -215,6 +255,7 @@ def runRCVElections(npData, num, imgfilepath):
   t = time.process_time()
   for el in npData:
     if(str(el[3]).isnumeric() and (int(el[3]) > 1)):
+      print("rcv")
       winList = runRCVIterations(el[1], el[0], num, el[2], int(el[3]))
       newString += printResults(el[0], winList)
       plotResults(el[0], winList, imgfilepath)
@@ -232,22 +273,7 @@ def runTopTwoElections(npData, num, imgfilepath):
   t = time.process_time()
   for el in npData:
     if(str(el[3]).isnumeric() and (int(el[3]) > 1)):
-      winList = runTopTwoIterations(el[1], el[0], num, el[2], int(el[3]))
-      newString += printResults(el[0], winList)
-      plotResults(el[0], winList, imgfilepath)
-      isPrinting = True
-  if(isPrinting):
-    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
-  else:
-    newString = ""
-  return newString
-
-def runTopTwoElections(npData, num, imgfilepath):
-  isPrinting = False
-  newString = "Top Two Elections\n\n"
-  t = time.process_time()
-  for el in npData:
-    if(str(el[3]).isnumeric() and (int(el[3]) > 1)):
+      print("top2")
       winList = runTopTwoIterations(el[1], el[0], num, el[2], int(el[3]))
       newString += printResults(el[0], winList)
       plotResults(el[0], winList, imgfilepath)
@@ -263,8 +289,36 @@ def runApprovalElections(npData, num, imgfilepath):
   newString = "Approval Elections\n\n"
   t = time.process_time()
   for el in npData:
-    if((str(el[3]).isnumeric() and (int(el[3]) > 1)) or el[3]:
-      winList = runTopTwoIterations(el[1], el[0], num, el[2], int(el[3]))
+    isBigNumber = str(el[3]).isnumeric() and int(el[3]) > 1
+    isPairwise = el[3] == 'a'
+    if(isBigNumber or isPairwise):
+      print("app")
+      depthNum = 0
+      if(isBigNumber):
+        depthNum = int(el[3])
+      winList = runApprovalIterations(el[1], el[0], num, el[2], depthNum)
+      newString += printResults(el[0], winList)
+      plotResults(el[0], winList, imgfilepath)
+      isPrinting = True
+  if(isPrinting):
+    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+  else:
+    newString = ""
+  return newString
+
+def runPairwiseElections(npData, num, imgfilepath):
+  isPrinting = False
+  newString = "Pairwise Elections\n\n"
+  t = time.process_time()
+  for el in npData:
+    isBigNumber = str(el[3]).isnumeric() and int(el[3]) > 1
+    isPairwise = el[3] == 'p'
+    if(isBigNumber or isPairwise):
+      print("pair")
+      depthNum = 0
+      if(isBigNumber):
+        depthNum = int(el[3])
+      winList = runPairwiseIterations(el[1], el[0], num, el[2], depthNum)
       newString += printResults(el[0], winList)
       plotResults(el[0], winList, imgfilepath)
       isPrinting = True
@@ -284,6 +338,8 @@ def doAllSystems(name, filepath, imgfilepath, num, nested):
   newString += runFPTPElections(data, num, imgfilepath)
   newString += runRCVElections(data, num, imgfilepath)
   newString += runTopTwoElections(data, num, imgfilepath)
+  newString += runApprovalElections(data, num, imgfilepath)
+  newString += runPairwiseElections(data, num, imgfilepath)
   return newString
 
 #process a text file in order to send its data to the client

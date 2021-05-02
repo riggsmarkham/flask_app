@@ -2,6 +2,7 @@
 const UPLOAD_RESULT = 'results';
 const UPLOAD_FILEEXT = '.txt';
 const IMGFILEFORMAT = '.png'
+const UPLOAD_IMAGES = 'img';
 
 var selection = [];
 var filename_root = "";
@@ -195,7 +196,12 @@ function create_processed_block(res){
     } else if (selection[2] == "pref"){
         
     } else if (selection[2] == "appr"){
-        
+        document.getElementById('pb_cand_list').innerHTML += obj.candString;
+        document.getElementById('pb_ss').innerHTML += obj.sample_size;
+        const candArray = obj.candString.split(", ");
+        document.getElementById('pb_cand_num').innerHTML += candArray.length.toString();
+        const numArray = obj.pollString.split(", ");
+        table = create_poll_table_processed(candArray, numArray, "Candidate Name", "Approval Result");
     } else if (selection[2] == "pair"){
         
     }
@@ -246,9 +252,15 @@ function delete_file(){
         url: '/election_sim/delete_file/' + filename_root + UPLOAD_FILEEXT,
         method: 'DELETE',
         success: function() {
-            document.getElementById("0-run-file").disabled = true;
-            document.getElementById("0-download-file").disabled = true;
-            document.getElementById("0-delete-file").disabled = true;
+            $.ajax({
+                url: '/election_sim/delete_file/' + filename_root + UPLOAD_IMAGES,
+                method: 'DELETE',
+                success: function() {
+                    document.getElementById("0-run-file").disabled = true;
+                    document.getElementById("0-download-file").disabled = true;
+                    document.getElementById("0-delete-file").disabled = true;
+                }
+            });
         }
     });
 }

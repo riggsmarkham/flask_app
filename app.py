@@ -93,7 +93,7 @@ def get_img(folder, filename):
 @app.route('/election_sim/delete_file/<filename>', methods = ['DELETE'])
 def delete_file(filename):
     filepath = nameToPath(filename)
-    if path.isfile(filepath):
+    if path.exists(filepath):
         remove(filepath)
     return render_template("election_sim.html")
 

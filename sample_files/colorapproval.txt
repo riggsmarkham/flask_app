@@ -1,0 +1,5 @@
+1
+green,blue,red,yellow,purple,black
+59,23,89,53,40,45
+1000
+a
