@@ -1,5 +1,5 @@
 #imports
-from flask import Flask, render_template, request, send_file, url_for
+from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
 from os import path, makedirs, getenv, remove
 from glob import glob
@@ -62,7 +62,7 @@ def upload_text():
     wholeFilename = PATH_STRING + newRoot + UPLOAD_FILEEXT
     with open(wholeFilename, 'w') as f:
         f.write(text)
-    makedirs(PATH_STRING + newRoot + UPLOAD_IMAGES, exist_ok=True)
+    makedirs(IMAGE_PATH_STRING + newRoot + UPLOAD_IMAGES, exist_ok=True)
     return dumps(processData(wholeFilename, newRoot))
 
 @app.route('/election_sim/run_file/<filename>', methods = ['GET'])
@@ -87,12 +87,6 @@ def download_file(filename):
     filepath = nameToPath(filename)
     if path.isfile(filepath):
         return send_file(filepath, as_attachment=True, cache_timeout=0)
-
-# @app.route('/election_sim/img/<folder>/<filename>', methods = ['GET'])
-# def get_img(folder, filename):
-#     filepath = path.join(PATH_STRING + folder, filename)
-#     if path.isfile(filepath):
-#         return send_file(filepath, mimetype='image/png')
 
 @app.route('/election_sim/delete_file/<filename>', methods = ['DELETE'])
 def delete_file(filename):

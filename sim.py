@@ -32,7 +32,7 @@ def randomizedIteration(polling, sample):
       num = np.random.normal(x,stdev)
     results.append(num)
   results = np.array(results)
-  return np.array(results/np.sum(results))
+  return results
 
 #construct the preference list for RCV iteration
 def constructPrefList(partyList, depth):
@@ -127,13 +127,12 @@ def runApproval(partyList, results, depth):
 def runPairwise(partyList, results, depth):
   superiorityList = np.zeros(len(partyList))
   pairList = constructPairList(partyList)
-  print(pairList)
   if(depth == 1):
     for i in range(len(pairList)):
-      if results[i] > 50:
+      if results[i] > 0.5:
         index = np.where(partyList == pairList[i][0])[0][0]
         superiorityList[index] += 1
-      elif results[i] < 50:
+      elif results[i] < 0.5:
         index = np.where(partyList == pairList[i][1])[0][0]
         superiorityList[index] += 1
   else:
@@ -162,7 +161,7 @@ def runFPTPIterations(polling, partyList, num, sample, depth):
   normalized = normalizePolling(polling)
   winList = np.zeros(len(partyList))
   for _ in range(num):
-    results = randomizedIteration(normalized, sample)
+    results = normalizePolling(randomizedIteration(normalized, sample))
     winner = runFPTP(partyList, results, depth)
     winList[winner] += 1
   return winList
@@ -172,7 +171,7 @@ def runRCVIterations(polling, partyList, num, sample, depth):
   normalized = normalizePolling(polling)
   winList = np.zeros(len(partyList))
   for _ in range(num):
-    results = randomizedIteration(normalized, sample)
+    results = normalizePolling(randomizedIteration(normalized, sample))
     winner = runRCV(partyList, results, depth)
     winList[winner] += 1
   return winList
@@ -182,14 +181,14 @@ def runTopTwoIterations(polling, partyList, num, sample, depth):
   normalized = normalizePolling(polling)
   winList = np.zeros(len(partyList))
   for _ in range(num):
-    results = randomizedIteration(normalized, sample)
+    results = normalizePolling(randomizedIteration(normalized, sample))
     winner = runTopTwo(partyList, results, depth)
     winList[winner] += 1
   return winList
 
 #run num iterations of an approval election
 def runApprovalIterations(polling, partyList, num, sample, depth):
-  normalized = normalizePolling(polling)
+  normalized = np.array(polling/100)
   winList = np.zeros(len(partyList))
   for _ in range(num):
     results = randomizedIteration(normalized, sample)
@@ -199,7 +198,7 @@ def runApprovalIterations(polling, partyList, num, sample, depth):
 
 #run num iterations of a pairwise election
 def runPairwiseIterations(polling, partyList, num, sample, depth):
-  normalized = normalizePolling(polling)
+  normalized = np.array(polling/100)
   winList = np.zeros(len(partyList))
   for _ in range(num):
     results = randomizedIteration(normalized, sample)

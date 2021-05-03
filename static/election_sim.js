@@ -3,6 +3,7 @@ const UPLOAD_RESULT = 'results';
 const UPLOAD_FILEEXT = '.txt';
 const IMGFILEFORMAT = '.png'
 const UPLOAD_IMAGES = 'img';
+const UPLOAD_FOLDER = 'static/election_sim_images'
 
 var selection = [];
 var filename_root = "";
@@ -170,10 +171,14 @@ function process_input(){
     var candString = candNames.join();
     var pollString = pollNums.join();
     var text = '1\n'+candString+'\n'+pollString+'\n'+sample_size+'\n';
-    if(selection[2] != "pref"){
+    if(selection[2] == "fptp"){
         text += '1';
-    } else {
+    } else if(selection[2] == "pref"){
         text += document.getElementById('pref_len').value;
+    } else if(selection[2] == "appr"){
+        text += 'a';
+    } else if(selection[2] == "pair"){
+        text += 'p';
     }
     var formData = new FormData();
     formData.append('text', text);
@@ -204,7 +209,20 @@ function create_processed_block(res){
         const numArray = obj.pollString.split(", ");
         table = create_poll_table_processed(candArray, numArray, "Candidate Name", "Poll Result");
     } else if (selection[2] == "pref"){
-        
+        document.getElementById('pb_cand_list').innerHTML += obj.candString;
+        document.getElementById('pb_ss').innerHTML += obj.sample_size;
+        const candArray = obj.candString.split(", ");
+        document.getElementById('pb_cand_num').innerHTML += candArray.length.toString();
+        const numArray = obj.pollString.split(", ");
+        const val = parseInt(document.getElementById("pref_len").value);
+        const permutedArr = getPermutations(candArray, val);
+        console.log(permutedArr);
+        var newArray = [];
+        for (i = 0; i < permutedArr.length; i++){
+            newArray.push(permutedArr[i].join(">"));
+        }
+        console.log(newArray);
+        table = create_poll_table_processed(newArray, numArray, "Preference List", "Poll Result");
     } else if (selection[2] == "appr"){
         document.getElementById('pb_cand_list').innerHTML += obj.candString;
         document.getElementById('pb_ss').innerHTML += obj.sample_size;
@@ -213,7 +231,17 @@ function create_processed_block(res){
         const numArray = obj.pollString.split(", ");
         table = create_poll_table_processed(candArray, numArray, "Candidate Name", "Approval Result");
     } else if (selection[2] == "pair"){
-        
+        document.getElementById('pb_cand_list').innerHTML += obj.candString;
+        document.getElementById('pb_ss').innerHTML += obj.sample_size;
+        const candArray = obj.candString.split(", ");
+        document.getElementById('pb_cand_num').innerHTML += candArray.length.toString();
+        const numArray = obj.pollString.split(", ");
+        const combinationArr = getCombinations(candArray, 2);
+        var newArray = [];
+        for (i = 0; i < combinationArr.length; i++){
+            newArray.push(combinationArr[i].join(">"));
+        }
+        table = create_poll_table_processed(newArray, numArray, "Candidate Pair", "Poll Result");
     }
     const parent = document.getElementById("process_box");
     const child = document.getElementById("pb_ss");
@@ -281,9 +309,9 @@ function create_image_block(imgfoldername, num){
         var img;
         num_str = i.toString();
         img = document.createElement('img');
-        img.src = '/static/election_sim_images/' + imgfoldername + '/' + num_str + IMGFILEFORMAT;
+        img.src = '/' + UPLOAD_FOLDER + '/' + imgfoldername + '/' + num_str + IMGFILEFORMAT;
         img.alt = 'Simulation ' + num_str;
-        img.id = 'img' + num_str;
+        img.id = UPLOAD_IMAGES + num_str;
         document.getElementById('result_box').appendChild(img);
     }
 }
@@ -305,4 +333,60 @@ function getCombinations(array, size) {
     var result = [];
     p([], 0);
     return result;
+}
+
+//a function that I found that should find all permutations of an array
+//https://gist.github.com/justinfay/f30d53f8b85a274aee57
+function getPermutations(array, r) {
+    // Algorythm copied from Python `itertools.permutations`.
+    var n = array.length;
+    if (r === undefined) {
+        r = n;
+    }
+    if (r > n) {
+        return;
+    }
+    var indices = [];
+    for (var i = 0; i < n; i++) {
+        indices.push(i);
+    }
+    var cycles = [];
+    for (var i = n; i > n - r; i--) {
+        cycles.push(i);
+    }
+    var results = [];
+    var res = [];
+    for (var k = 0; k < r; k++) {
+        res.push(array[indices[k]]);
+    }
+    results.push(res);
+    var broken = false;
+    while (n > 0) {
+        for (var i = r - 1; i >= 0; i--) {
+            cycles[i]--;
+            if (cycles[i] === 0) {
+                indices = indices.slice(0, i).concat(
+                    indices.slice(i + 1).concat(
+                        indices.slice(i, i + 1)));
+                cycles[i] = n - i;
+                broken = false;
+            } else {
+                var j = cycles[i];
+                var x = indices[i];
+                indices[i] = indices[n - j];
+                indices[n - j] = x;
+                var res = [];
+                for (var k = 0; k < r; k++) {
+                    res.push(array[indices[k]]);
+                }
+                results.push(res);
+                broken = true;
+                break;
+            }
+        }
+        if (broken === false) {
+            break;
+        }
+    }
+    return results;
 }
