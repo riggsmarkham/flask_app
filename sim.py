@@ -1,6 +1,6 @@
 #imports
 import numpy as np
-from itertools import permutations
+from itertools import permutations, combinations
 import time
 import matplotlib
 matplotlib.use('Agg')
@@ -37,6 +37,10 @@ def randomizedIteration(polling, sample):
 #construct the preference list for RCV iteration
 def constructPrefList(partyList, depth):
   return np.asarray(list(permutations(partyList,depth)))
+
+#construct pair list for condorcet iteration
+def constructPairList(partyList):
+  return np.asarray(list(combinations(partyList,2)))
 
 #figure out the winner of a First past the post election from results
 def runFPTP(partyList, results, depth):
@@ -122,7 +126,8 @@ def runApproval(partyList, results, depth):
 #figure out winner of a pairwise election (Copeland's method of Condorcet elections)
 def runPairwise(partyList, results, depth):
   superiorityList = np.zeros(len(partyList))
-  pairList = constructPrefList(partyList, 2)
+  pairList = constructPairList(partyList)
+  print(pairList)
   if(depth == 1):
     for i in range(len(pairList)):
       if results[i] > 50:

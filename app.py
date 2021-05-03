@@ -16,8 +16,12 @@ UPLOAD_FILEEXT = '.txt'
 EXT_INDEX = -(len(UPLOAD_FILEEXT))
 UPLOAD_RESULT = 'results'
 UPLOAD_IMAGES = 'img'
+IMAGE_FOLDER = 'election_sim_images'
+IMAGE_PATH_NAME = path.join(app.static_folder, IMAGE_FOLDER)
+IMAGE_PATH_STRING = path.join(IMAGE_PATH_NAME, '')
 PATH_NAME = path.join(app.instance_path, UPLOAD_FOLDER)
 PATH_STRING = path.join(PATH_NAME, '')
+makedirs(IMAGE_PATH_NAME, exist_ok=True)
 makedirs(PATH_NAME, exist_ok=True)
 
 #helper functions
@@ -47,8 +51,7 @@ def upload_file():
     if fname.endswith(UPLOAD_FILEEXT):
         wholeFilename = PATH_STRING + fname
         f.save(wholeFilename)
-        #makedirs(url_for('static', filename=fname[:EXT_INDEX] + UPLOAD_IMAGES), exist_ok=True)
-        makedirs(PATH_STRING + fname[:EXT_INDEX] + UPLOAD_IMAGES, exist_ok=True)
+        makedirs(IMAGE_PATH_STRING + fname[:EXT_INDEX] + UPLOAD_IMAGES, exist_ok=True)
         return dumps(processData(wholeFilename, fname[:EXT_INDEX]))
     return render_template("election_sim.html")
 
@@ -65,7 +68,7 @@ def upload_text():
 @app.route('/election_sim/run_file/<filename>', methods = ['GET'])
 def run_file(filename):
     filepath = nameToPath(filename)
-    imgfilepath = path.join(filepath[:EXT_INDEX] + UPLOAD_IMAGES, '')
+    imgfilepath = path.join(IMAGE_PATH_STRING + filename[:EXT_INDEX] + UPLOAD_IMAGES, '')
     if path.isfile(filepath):
         resultString = doAllSystems('Simulation',  filepath, imgfilepath, NUM, False)
         with open(PATH_STRING + filename[:EXT_INDEX] + UPLOAD_RESULT + UPLOAD_FILEEXT, 'w') as f:
@@ -85,11 +88,11 @@ def download_file(filename):
     if path.isfile(filepath):
         return send_file(filepath, as_attachment=True, cache_timeout=0)
 
-@app.route('/election_sim/img/<folder>/<filename>', methods = ['GET'])
-def get_img(folder, filename):
-    filepath = path.join(PATH_STRING + folder, filename)
-    if path.isfile(filepath):
-        return send_file(filepath, mimetype='image/png')
+# @app.route('/election_sim/img/<folder>/<filename>', methods = ['GET'])
+# def get_img(folder, filename):
+#     filepath = path.join(PATH_STRING + folder, filename)
+#     if path.isfile(filepath):
+#         return send_file(filepath, mimetype='image/png')
 
 @app.route('/election_sim/delete_file/<filename>', methods = ['DELETE'])
 def delete_file(filename):

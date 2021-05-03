@@ -3,3 +3,4 @@ env
 __pycache__
 instance
 app.wsgi
+static/election_sim_images

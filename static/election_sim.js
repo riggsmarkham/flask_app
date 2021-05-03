@@ -110,20 +110,20 @@ function populate_poll_table(){
     if(selection[2] == "fptp"){
         table = create_poll_table_element(candNames, "Candidate Name", "Poll Result");
     } else if (selection[2] == "pref"){
-        val = document.getElementById("pref_len").value;
-        permutedArr = getPermutations(candNames, val);
-        newArray = [];
-        for(el in permutedArr){
-            newArray.add(el.join(">"));
+        const val = parseInt(document.getElementById("pref_len").value);
+        const permutedArr = getPermutations(candNames, val);
+        var newArray = [];
+        for (i = 0; i < permutedArr.length; i++){
+            newArray.push(permutedArr[i].join(">"));
         }
         table = create_poll_table_element(newArray, "Preference List", "Poll Result");
     } else if (selection[2] == "appr"){
         table = create_poll_table_element(candNames, "Candidate Name", "Approval Rating");
     } else if (selection[2] == "pair"){
-        permutedArr = getPermutations(candNames, 2);
-        newArray = [];
-        for(el in permutedArr){
-            newArray.add(el.join(">"));
+        const combinationArr = getCombinations(candNames, 2);
+        var newArray = [];
+        for (i = 0; i < combinationArr.length; i++){
+            newArray.push(combinationArr[i].join(">"));
         }
         table = create_poll_table_element(newArray, "Pair of Candidates", "Poll Result");
     }
@@ -281,16 +281,16 @@ function create_image_block(imgfoldername, num){
         var img;
         num_str = i.toString();
         img = document.createElement('img');
-        img.src = '/static/election_sim/' + imgfoldername + '/' + num_str + IMGFILEFORMAT;
+        img.src = '/static/election_sim_images/' + imgfoldername + '/' + num_str + IMGFILEFORMAT;
         img.alt = 'Simulation ' + num_str;
         img.id = 'img' + num_str;
         document.getElementById('result_box').appendChild(img);
     }
 }
 
+//a function that I found that should find all combinations an array
 //https://stackoverflow.com/questions/45813439/itertools-combinations-in-javascript
-function getPermutations(array, size) {
-
+function getCombinations(array, size) {
     function p(t, i) {
         if (t.length === size) {
             result.push(t);
@@ -302,7 +302,6 @@ function getPermutations(array, size) {
         p(t.concat(array[i]), i + 1);
         p(t, i + 1);
     }
-
     var result = [];
     p([], 0);
     return result;
