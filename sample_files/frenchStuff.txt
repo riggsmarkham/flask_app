@@ -1,0 +1,5 @@
+1
+Melanchon,Hidalgo,Jadot,Macron,Bertrand,Dupont-Aignan,Le Pen
+11,7,6,24,16,5,25
+1730
+1
