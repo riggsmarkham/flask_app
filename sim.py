@@ -43,7 +43,7 @@ def runFPTP(partyList, results, depth):
   prefList = constructPrefList(partyList, depth)
   partySums = np.zeros(len(partyList))
   for i in range(len(results)):
-    index = np.where(partyList == prefList[i][0])
+    index = np.where(partyList == prefList[i][0])[0][0]
     partySums[index] += results[i]
   return np.argmax(partySums)
 
@@ -53,17 +53,17 @@ def runRCV(partyList, results, depth):
   pointerList = np.zeros(len(prefList), dtype=int)
   partySums = np.zeros(len(partyList))
   for i in range(len(results)):
-    index = np.where(partyList == prefList[i][0])
+    index = np.where(partyList == prefList[i][0])[0][0]
     partySums[index] += results[i]
   while(np.max(partySums) <= (np.sum(partySums)/2)):
-    index = np.where(partySums == np.min(partySums[np.nonzero(partySums)]))
+    index = np.where(partySums == np.min(partySums[np.nonzero(partySums)]))[0][0]
     for i in range(len(prefList)):
       if (pointerList[i] < len(prefList[i])) and (prefList[i][pointerList[i]] == partyList[index]):
         pointerList[i] += 1
         trying = True
         while(trying):
           if(pointerList[i] < len(prefList[i])):
-            newIndex = np.where(partyList == prefList[i][pointerList[i]])
+            newIndex = np.where(partyList == prefList[i][pointerList[i]])[0][0]
             if(partySums[newIndex] != 0):
               partySums[newIndex] += results[i]
               trying = False
@@ -84,7 +84,7 @@ def runTopTwo(partyList, results, depth):
   pointerList = np.zeros(len(prefList), dtype=int)
   partySums = np.zeros(len(partyList))
   for i in range(len(results)):
-    index = np.where(partyList == prefList[i][0])
+    index = np.where(partyList == prefList[i][0])[0][0]
     partySums[index] += results[i]
   temp = np.argpartition(-partySums, 2)
   result_args = temp[:2]
@@ -96,32 +96,61 @@ def runTopTwo(partyList, results, depth):
       trying = pointerList[i] < len(prefList[i])
       while(trying):
         if(prefList[i][pointerList[i]] in topParties):
-          partySums[np.where(partyList == prefList[i][pointerList[i]])] += results[i]
+          partySums[np.where(partyList == prefList[i][pointerList[i]])[0][0]] += results[i]
           trying = False
         else:
           pointerList += 1
           trying = pointerList[i] < len(prefList[i])
-      partySums[np.where(partyList == prefList[i][0])] -= results[i]
+      partySums[np.where(partyList == prefList[i][0])[0][0]] -= results[i]
   return np.argmax(partySums)
 
+#figure out winner of an approval election
 def runApproval(partyList, results, depth):
-  if(depth == 0):
-    depth = 1
   prefList = constructPrefList(partyList, depth)
   partySums = np.zeros(len(partyList))
   if(depth == 1):
     for i in range(len(results)):
-      index = np.where(partyList == prefList[i][0])
+      index = np.where(partyList == prefList[i][0])[0][0]
       partySums[index] += results[i]
   else:
     for i in range(math.ceil(depth * APPROVALPROPORTION)):
       for j in range(len(results)):
-        index = np.where(partyList == prefList[j][i])
+        index = np.where(partyList == prefList[j][i])[0][0]
         partySums[index] += results[j]
   return np.argmax(partySums)
 
+#figure out winner of a pairwise election (Copeland's method of Condorcet elections)
 def runPairwise(partyList, results, depth):
-  return -1
+  superiorityList = np.zeros(len(partyList))
+  pairList = constructPrefList(partyList, 2)
+  if(depth == 1):
+    for i in range(len(pairList)):
+      if results[i] > 50:
+        index = np.where(partyList == pairList[i][0])[0][0]
+        superiorityList[index] += 1
+      elif results[i] < 50:
+        index = np.where(partyList == pairList[i][1])[0][0]
+        superiorityList[index] += 1
+  else:
+    prefList = constructPrefList(partyList, depth)
+    for i in range(len(pairList)):
+      partyAdvantage = 0
+      party1 = pairList[i][0]
+      party2 = pairList[i][1]
+      for i in range(len(prefList)):
+        if (party1 in prefList[i]) and (party2 in prefList[i]):
+          indexdif = np.where(prefList[i] == party1)[0][0] - np.where(prefList[i] == party2)[0][0]
+          if(indexdif < 0):
+            partyAdvantage += results[i]
+          else:
+            partyAdvantage -= results[i]
+      if partyAdvantage > 0:
+        index = np.where(partyList == party1)[0][0]
+        superiorityList[index] += 1
+      elif partyAdvantage < 0:
+        index = np.where(partyList == party2)[0][0]
+        superiorityList[index] += 1
+  return np.argmax(superiorityList)
 
 #run num iterations of a fptp election
 def runFPTPIterations(polling, partyList, num, sample, depth):
@@ -153,6 +182,7 @@ def runTopTwoIterations(polling, partyList, num, sample, depth):
     winList[winner] += 1
   return winList
 
+#run num iterations of an approval election
 def runApprovalIterations(polling, partyList, num, sample, depth):
   normalized = normalizePolling(polling)
   winList = np.zeros(len(partyList))
@@ -162,6 +192,7 @@ def runApprovalIterations(polling, partyList, num, sample, depth):
     winList[winner] += 1
   return winList
 
+#run num iterations of a pairwise election
 def runPairwiseIterations(polling, partyList, num, sample, depth):
   normalized = normalizePolling(polling)
   winList = np.zeros(len(partyList))
@@ -284,6 +315,7 @@ def runTopTwoElections(npData, num, imgfilepath):
     newString = ""
   return newString
 
+#actually runs an approval simulation given data from file
 def runApprovalElections(npData, num, imgfilepath):
   isPrinting = False
   newString = "Approval Elections\n\n"
@@ -293,7 +325,7 @@ def runApprovalElections(npData, num, imgfilepath):
     isPairwise = el[3] == 'a'
     if(isBigNumber or isPairwise):
       print("app")
-      depthNum = 0
+      depthNum = 1
       if(isBigNumber):
         depthNum = int(el[3])
       winList = runApprovalIterations(el[1], el[0], num, el[2], depthNum)
@@ -306,6 +338,7 @@ def runApprovalElections(npData, num, imgfilepath):
     newString = ""
   return newString
 
+#actually runs a pairwise simulation given data from file
 def runPairwiseElections(npData, num, imgfilepath):
   isPrinting = False
   newString = "Pairwise Elections\n\n"
@@ -315,7 +348,7 @@ def runPairwiseElections(npData, num, imgfilepath):
     isPairwise = el[3] == 'p'
     if(isBigNumber or isPairwise):
       print("pair")
-      depthNum = 0
+      depthNum = 1
       if(isBigNumber):
         depthNum = int(el[3])
       winList = runPairwiseIterations(el[1], el[0], num, el[2], depthNum)
