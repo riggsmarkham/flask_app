@@ -1,5 +1,5 @@
 #imports
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, url_for
 from werkzeug.utils import secure_filename
 from os import path, makedirs, getenv, remove
 from glob import glob
@@ -47,6 +47,7 @@ def upload_file():
     if fname.endswith(UPLOAD_FILEEXT):
         wholeFilename = PATH_STRING + fname
         f.save(wholeFilename)
+        #makedirs(url_for('static', filename=fname[:EXT_INDEX] + UPLOAD_IMAGES), exist_ok=True)
         makedirs(PATH_STRING + fname[:EXT_INDEX] + UPLOAD_IMAGES, exist_ok=True)
         return dumps(processData(wholeFilename, fname[:EXT_INDEX]))
     return render_template("election_sim.html")

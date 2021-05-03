@@ -110,12 +110,22 @@ function populate_poll_table(){
     if(selection[2] == "fptp"){
         table = create_poll_table_element(candNames, "Candidate Name", "Poll Result");
     } else if (selection[2] == "pref"){
-        //var val = document.getElementById("pref_len").value;
-
+        val = document.getElementById("pref_len").value;
+        permutedArr = getPermutations(candNames, val);
+        newArray = [];
+        for(el in permutedArr){
+            newArray.add(el.join(">"));
+        }
+        table = create_poll_table_element(newArray, "Preference List", "Poll Result");
     } else if (selection[2] == "appr"){
         table = create_poll_table_element(candNames, "Candidate Name", "Approval Rating");
     } else if (selection[2] == "pair"){
-
+        permutedArr = getPermutations(candNames, 2);
+        newArray = [];
+        for(el in permutedArr){
+            newArray.add(el.join(">"));
+        }
+        table = create_poll_table_element(newArray, "Pair of Candidates", "Poll Result");
     }
     const parent = document.getElementById("poll_table");
     const child = document.getElementById("ss_q");
@@ -276,4 +286,24 @@ function create_image_block(imgfoldername, num){
         img.id = 'img' + num_str;
         document.getElementById('result_box').appendChild(img);
     }
+}
+
+//https://stackoverflow.com/questions/45813439/itertools-combinations-in-javascript
+function getPermutations(array, size) {
+
+    function p(t, i) {
+        if (t.length === size) {
+            result.push(t);
+            return;
+        }
+        if (i + 1 > array.length) {
+            return;
+        }
+        p(t.concat(array[i]), i + 1);
+        p(t, i + 1);
+    }
+
+    var result = [];
+    p([], 0);
+    return result;
 }
