@@ -13,6 +13,8 @@ EPSILON = 10e-10
 NUM = 1000
 IMGFILEFORMAT = '.png'
 APPROVALPROPORTION = 0.5
+MIN_GRAPH = 0.02
+OTHER_STRING = "Other"
 
 #normalize polling to decimals between 0 (none) and 1 (all)
 def normalizePolling(polling):
@@ -275,7 +277,7 @@ def runFPTPElections(npData, num, imgfilepath):
       print("fptp")
       winList = runFPTPIterations(el[1], el[0], num, el[2], int(el[3]))
       newString += printResults(el[0], winList)
-      plotResults(el[0], winList, imgfilepath)
+      plotResults(el[0], winList, imgfilepath, "Plurality Winner")
       isPrinting = True
   if(isPrinting):
     newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
@@ -293,7 +295,7 @@ def runRCVElections(npData, num, imgfilepath):
       print("rcv")
       winList = runRCVIterations(el[1], el[0], num, el[2], int(el[3]))
       newString += printResults(el[0], winList)
-      plotResults(el[0], winList, imgfilepath)
+      plotResults(el[0], winList, imgfilepath, "Ranked Choice Winner")
       isPrinting = True
   if(isPrinting):
     newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
@@ -311,7 +313,7 @@ def runTopTwoElections(npData, num, imgfilepath):
       print("top2")
       winList = runTopTwoIterations(el[1], el[0], num, el[2], int(el[3]))
       newString += printResults(el[0], winList)
-      plotResults(el[0], winList, imgfilepath)
+      plotResults(el[0], winList, imgfilepath, "Top Two Winner")
       isPrinting = True
   if(isPrinting):
     newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
@@ -334,7 +336,7 @@ def runApprovalElections(npData, num, imgfilepath):
         depthNum = int(el[3])
       winList = runApprovalIterations(el[1], el[0], num, el[2], depthNum)
       newString += printResults(el[0], winList)
-      plotResults(el[0], winList, imgfilepath)
+      plotResults(el[0], winList, imgfilepath, "Approval Winner")
       isPrinting = True
   if(isPrinting):
     newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
@@ -357,7 +359,7 @@ def runPairwiseElections(npData, num, imgfilepath):
         depthNum = int(el[3])
       winList = runPairwiseIterations(el[1], el[0], num, el[2], depthNum)
       newString += printResults(el[0], winList)
-      plotResults(el[0], winList, imgfilepath)
+      plotResults(el[0], winList, imgfilepath, "Pairwise Winner")
       isPrinting = True
   if(isPrinting):
     newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
@@ -399,13 +401,19 @@ def processData(filepath, fileroot):
   return obj
 
 #plot results
-def plotResults(partyList, resultList, imgfilepath):
-  plt.pie(resultList, labels=partyList, autopct='%1.1f%%')
+def plotResults(partyList, resultList, imgfilepath, title):
+  newDict = {}
+  for i in range(len(partyList)):
+    if(resultList[i] >= (MIN_GRAPH * NUM)):
+      newDict[partyList[i]] = resultList[i]
+    elif(resultList[i] > 0):
+      if OTHER_STRING not in newDict:
+        newDict[OTHER_STRING] = 0
+      newDict[OTHER_STRING] += resultList[i]
+  plt.pie(newDict.values(), labels=newDict.keys(), autopct='%1.1f%%')
   plt.axis('equal')
+  plt.tight_layout()
+  plt.title(title)
   numstr = str(len(glob(imgfilepath+ '*')))
-  plt.savefig(imgfilepath + numstr + IMGFILEFORMAT)
-
-# doAllSystems('Quick Color Parties', 'data/simplecolors.txt', NUM, False)
-# doAllSystems('NYC Mayor', 'data/nycmayor.txt', NUM, False)
-# doAllSystems('Big Color Parties','data/rankedcolors.txt', NUM, False)
-# doAllSystems('Canada?', 'data/canada.txt', NUM, True)
+  plt.savefig(imgfilepath + numstr + IMGFILEFORMAT, bbox_inches='tight')
+  plt.clf()

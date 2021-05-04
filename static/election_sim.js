@@ -312,7 +312,9 @@ function create_image_block(imgfoldername, num){
         img.src = '/' + UPLOAD_FOLDER + '/' + imgfoldername + '/' + num_str + IMGFILEFORMAT;
         img.alt = 'Simulation ' + num_str;
         img.id = UPLOAD_IMAGES + num_str;
-        document.getElementById('result_box').appendChild(img);
+        const parent = document.getElementById('result_box');
+        const child = document.getElementById('0-download-results-link');
+        parent.insertBefore(img, child);
     }
 }
 
