@@ -40,10 +40,6 @@ def home():
 def election_app():
     return render_template("election_sim.html")
 
-@app.route("/temp_app", methods = ['GET'])
-def temp_app():
-    return render_template("temp_app.html")
-
 @app.route('/election_sim/file_submit', methods = ['POST'])
 def upload_file():
     f = request.files['file']
