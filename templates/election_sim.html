@@ -22,10 +22,10 @@
                 <button id="2-no">Not Implemented Yet</button>
             </div>
             <div class="buttondiv">
-                <button id="3-fptp" onclick="reveal(['4-file','4-text'], this)">FPTP Polls</button>
-                <button id="3-pref" onclick="reveal(['4-file','4-text'], this)">Preference Lists</button>
+                <button id="3-fptp" onclick="reveal(['4-file','4-text'], this)">Single Choice Polls</button>
+                <button id="3-pref" onclick="reveal(['4-file','4-text'], this)">Ranked Polls</button>
                 <button id="3-appr" onclick="reveal(['4-file','4-text'], this)">Approval Polls</button>
-                <button id="3-pair" onclick="reveal(['4-file','4-text'], this)">Ranked Pairs</button>
+                <button id="3-pair" onclick="reveal(['4-file','4-text'], this)">Pairwise Polls</button>
                 <button id="3-no">Not Implemented Yet</button>
             </div>
             <div class="buttondiv">
@@ -46,12 +46,12 @@
             </div>
             <div id='text_form' class='big_box'>
                 <div id='cand_setup'>
-                    <p>Number of Candidates: <input type="number" id='cand_num'/></p>
+                    <p>Number of Choices: <input type="number" id='cand_num'/></p>
                     <button type="button" id="0-cand_num_form" onclick="populate_cand_table()">Next</button>
                 </div>
                 <div id='cand_table'>
-                    <p>Enter Names of Candidates: </p>
-                    <p id='pref_q'>Length of Each Preference List: <input type="number" id='pref_len'/></p>
+                    <p>Enter Names of Choices: </p>
+                    <p id='pref_q'>Number of Choices Ranked: <input type="number" id='pref_len'/></p>
                     <button type="button" id="0-cand_form" onclick="populate_poll_table()">Next</button>
                 </div>
                 <div id='poll_table'>
@@ -63,8 +63,8 @@
         </div>
         <div id='process_box' class='big_box'>
             <h3 id='pb_title'>Election Summary:</h3>
-            <p id='pb_cand_num'>Number of Candidates: </p>
-            <p id='pb_cand_list'>Candidate List: </p>
+            <p id='pb_cand_num'>Number of Choices: </p>
+            <p id='pb_cand_list'>List of Choices: </p>
             <p id='pb_poll_table'>Polling Table: </p>
             <p id='pb_ss'>Sample Size: </p>
             <div class='buttondiv'>
