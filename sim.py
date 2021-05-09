@@ -119,7 +119,7 @@ def runApproval(partyList, results, depth):
       index = np.where(partyList == prefList[i][0])[0][0]
       partySums[index] += results[i]
   else:
-    for i in range(math.ceil(depth * APPROVALPROPORTION)):
+    for i in range(math.min(depth, math.ceil(len(partyList) * APPROVALPROPORTION))):
       for j in range(len(results)):
         index = np.where(partyList == prefList[j][i])[0][0]
         partySums[index] += results[j]
@@ -190,20 +190,32 @@ def runTopTwoIterations(polling, partyList, num, sample, depth):
 
 #run num iterations of an approval election
 def runApprovalIterations(polling, partyList, num, sample, depth):
-  normalized = np.array(polling/100)
+  if(depth == 1):
+    normalized = np.array(polling/100)
+  else:
+    normalized = normalizePolling(polling)
   winList = np.zeros(len(partyList))
   for _ in range(num):
-    results = randomizedIteration(normalized, sample)
+    if(depth == 1):
+      results = randomizedIteration(normalized, sample)
+    else:
+      results = normalizePolling(randomizedIteration(normalized, sample))
     winner = runApproval(partyList, results, depth)
     winList[winner] += 1
   return winList
 
 #run num iterations of a pairwise election
 def runPairwiseIterations(polling, partyList, num, sample, depth):
-  normalized = np.array(polling/100)
+  if(depth == 1):
+    normalized = np.array(polling/100)
+  else:
+    normalized = normalizePolling(polling)
   winList = np.zeros(len(partyList))
   for _ in range(num):
-    results = randomizedIteration(normalized, sample)
+    if(depth == 1):
+      results = randomizedIteration(normalized, sample)
+    else:
+      results = normalizePolling(randomizedIteration(normalized, sample))
     winner = runPairwise(partyList, results, depth)
     winList[winner] += 1
   return winList
