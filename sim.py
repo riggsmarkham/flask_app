@@ -28,10 +28,15 @@ def calcSTDEV(x, sample):
 def randomizedIteration(polling, sample):
   results = []
   for x in polling:
-    stdev = calcSTDEV(x, sample)
-    num = np.random.normal(x,stdev)
+    val = x
+    if x > 1:
+      val = 1
+    elif x < 0:
+      val = 0
+    stdev = calcSTDEV(val, sample)
+    num = np.random.normal(val,stdev)
     while num < 0 or num > 1:
-      num = np.random.normal(x,stdev)
+      num = np.random.normal(val,stdev)
     results.append(num)
   results = np.array(results)
   return results
