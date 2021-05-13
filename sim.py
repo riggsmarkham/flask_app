@@ -119,10 +119,11 @@ def runApproval(partyList, results, depth):
       index = np.where(partyList == prefList[i][0])[0][0]
       partySums[index] += results[i]
   else:
-    for i in range(math.min(depth, math.ceil(len(partyList) * APPROVALPROPORTION))):
-      for j in range(len(results)):
-        index = np.where(partyList == prefList[j][i])[0][0]
-        partySums[index] += results[j]
+    searchDepth = math.min(depth, math.ceil(len(partyList) * APPROVALPROPORTION))
+    for i in range(len(results)):
+      for j in range(searchDepth):
+        index = np.where(partyList == prefList[i][j])[0][0]
+        partySums[index] += results[i]
   return np.argmax(partySums)
 
 #figure out winner of a pairwise election (Copeland's method of Condorcet elections)
@@ -150,6 +151,10 @@ def runPairwise(partyList, results, depth):
             partyAdvantage += results[i]
           else:
             partyAdvantage -= results[i]
+        elif(party1 in prefList[i]):
+          partyAdvantage += results[i]
+        elif(party2 in prefList[i]):
+          partyAdvantage -= results[i]
       if partyAdvantage > 0:
         index = np.where(partyList == party1)[0][0]
         superiorityList[index] += 1
