@@ -292,7 +292,7 @@ def printResults(names, results):
 #actually run fptp simulation given data from file
 def runFPTPElections(npData, num, imgfilepath):
   isPrinting = False
-  newString = "FPTP Elections\n\n"
+  newString = "Plurality Election\n\n"
   t = time.process_time()
   for el in npData:
     if(str(el[3]).isnumeric()):
@@ -302,7 +302,7 @@ def runFPTPElections(npData, num, imgfilepath):
       plotResults(el[0], winList, imgfilepath, "Plurality Winner")
       isPrinting = True
   if(isPrinting):
-    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+    newString += "Time: " + str(round((time.process_time() - t)/len(npData),3)) + ' seconds\n\n'
   else:
     newString = ""
   return newString
@@ -310,7 +310,7 @@ def runFPTPElections(npData, num, imgfilepath):
 #actually run rcv simulation given data from file
 def runRCVElections(npData, num, imgfilepath):
   isPrinting = False
-  newString = "RCV Elections\n\n"
+  newString = "Ranked Choice Election\n\n"
   t = time.process_time()
   for el in npData:
     if(str(el[3]).isnumeric() and (int(el[3]) > 1)):
@@ -320,7 +320,7 @@ def runRCVElections(npData, num, imgfilepath):
       plotResults(el[0], winList, imgfilepath, "Ranked Choice Winner")
       isPrinting = True
   if(isPrinting):
-    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+    newString += "Time: " + str(round((time.process_time() - t)/len(npData),3)) + ' seconds\n\n'
   else:
     newString = ""
   return newString
@@ -328,7 +328,7 @@ def runRCVElections(npData, num, imgfilepath):
 #actually runs a top two runoff simulation given data from file
 def runTopTwoElections(npData, num, imgfilepath):
   isPrinting = False
-  newString = "Top Two Elections\n\n"
+  newString = "Top Two Runoff Election\n\n"
   t = time.process_time()
   for el in npData:
     if(str(el[3]).isnumeric() and (int(el[3]) > 1)):
@@ -338,7 +338,7 @@ def runTopTwoElections(npData, num, imgfilepath):
       plotResults(el[0], winList, imgfilepath, "Top Two Winner")
       isPrinting = True
   if(isPrinting):
-    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+    newString += "Time: " + str(round((time.process_time() - t)/len(npData),3)) + ' seconds\n\n'
   else:
     newString = ""
   return newString
@@ -346,7 +346,7 @@ def runTopTwoElections(npData, num, imgfilepath):
 #actually runs an approval simulation given data from file
 def runApprovalElections(npData, num, imgfilepath):
   isPrinting = False
-  newString = "Approval Elections\n\n"
+  newString = "Approval Election\n\n"
   t = time.process_time()
   for el in npData:
     isBigNumber = str(el[3]).isnumeric() and int(el[3]) > 1
@@ -361,7 +361,7 @@ def runApprovalElections(npData, num, imgfilepath):
       plotResults(el[0], winList, imgfilepath, "Approval Winner")
       isPrinting = True
   if(isPrinting):
-    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+    newString += "Time: " + str(round((time.process_time() - t)/len(npData),3)) + ' seconds\n\n'
   else:
     newString = ""
   return newString
@@ -369,7 +369,7 @@ def runApprovalElections(npData, num, imgfilepath):
 #actually runs a pairwise simulation given data from file
 def runPairwiseElections(npData, num, imgfilepath):
   isPrinting = False
-  newString = "Pairwise Elections\n\n"
+  newString = "Copeland's Method Election\n\n"
   t = time.process_time()
   for el in npData:
     isBigNumber = str(el[3]).isnumeric() and int(el[3]) > 1
@@ -381,10 +381,10 @@ def runPairwiseElections(npData, num, imgfilepath):
         depthNum = int(el[3])
       winList = runPairwiseIterations(el[1], el[0], num, el[2], depthNum)
       newString += printResults(el[0], winList)
-      plotResults(el[0], winList, imgfilepath, "Pairwise Winner")
+      plotResults(el[0], winList, imgfilepath, "Copeland Winner")
       isPrinting = True
   if(isPrinting):
-    newString += "Average time: " + str((time.process_time() - t)/len(npData)) + '\n\n'
+    newString += "Time: " + str(round((time.process_time() - t)/len(npData),3)) + ' seconds\n\n'
   else:
     newString = ""
   return newString
