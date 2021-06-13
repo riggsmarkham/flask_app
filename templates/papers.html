@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>Error!</title>
+    </head>
+    <body>
+        <div>
+            <h1>riggs's papers</h1>
+        </div>
+        <div>
+            <h3><a href="/">Go to back to home page</a></h3>
+        </div>
+        <div>
+            <h4>
+                <a href="{{ url_for('static', filename='rmP.pdf') }}">math paper</a><br>
+                <a href="{{ url_for('static', filename='CS_paper_riggs_markham.pdf') }}">cs paper</a><br>
+            </h4>
+        </div>
+    </body>
+</html>
