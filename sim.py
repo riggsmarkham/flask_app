@@ -124,7 +124,7 @@ def runApproval(partyList, results, depth):
       index = np.where(partyList == prefList[i][0])[0][0]
       partySums[index] += results[i]
   else:
-    searchDepth = math.min(depth, math.ceil(len(partyList) * APPROVALPROPORTION))
+    searchDepth = min(depth, math.ceil(len(partyList) * APPROVALPROPORTION))
     for i in range(len(results)):
       for j in range(searchDepth):
         index = np.where(partyList == prefList[i][j])[0][0]
