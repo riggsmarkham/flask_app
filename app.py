@@ -1,5 +1,5 @@
 #imports
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 from os import path, makedirs, getenv, remove
 from glob import glob
@@ -107,6 +107,11 @@ def bad_request(error):
 @app.errorhandler(500)
 def internal_server_error(error):
     return render_template('errors/500.html'),500
+
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 #this thing
 if __name__ == "__main__" :
