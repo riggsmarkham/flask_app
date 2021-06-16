@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://riggsmarkham.com/</loc>
+        <lastmod>2021-06-16</lastmod>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>https://riggsmarkham.com/election_sim</loc>
+        <lastmod>2021-06-16</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://riggsmarkham.com/papers</loc>
+        <lastmod>2021-06-16</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://riggsmarkham.com/static/resume.pdf</loc>
+        <lastmod>2021-05-09</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://riggsmarkham.com/static/rmP.pdf</loc>
+        <lastmod>2021-06-13</lastmod>
+        <priority>0.64</priority>
+    </url>
+    <url>
+        <loc>https://riggsmarkham.com/static/CS_paper_riggs_markham.pdf</loc>
+        <lastmod>2021-06-13</lastmod>
+        <priority>0.64</priority>
+    </url>
+</urlset>
